@@ -5,7 +5,7 @@ namespace ConnectionManager\Extra;
 use ConnectionManager\ConnectionManagerInterface;
 
 // connection manager decorator which simplifies exchanging the actual connection manager during runtime
-class ConnectionManagerWrapper implements ConnectionManagerInterface
+class ConnectionManagerSwappable implements ConnectionManagerInterface
 {
     protected $connectionManager;
 
