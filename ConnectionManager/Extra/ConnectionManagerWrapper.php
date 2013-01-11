@@ -1,6 +1,6 @@
 <?php
 
-namespace Psocksd;
+namespace ConnectionManager\Extra;
 
 use ConnectionManager\ConnectionManagerInterface;
 

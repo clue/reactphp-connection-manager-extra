@@ -1,5 +1,7 @@
 <?php
 
+namespace ConnectionManager\Extra;
+
 class ConnectionManagerTimeout implements ConnectionManagerInterface
 {
     private $connectionManager;

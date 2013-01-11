@@ -1,5 +1,7 @@
 <?php
 
+namespace ConnectionManager\Extra;
+
 class ConnectionManagerConsecutive implements ConnectionManagerInterface
 {
     private $managers = array();

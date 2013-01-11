@@ -1,5 +1,7 @@
 <?php
 
+namespace ConnectionManager\Extra;
+
 use ConnectionManager\ConnectionManagerInterface;
 use React\Promise\When;
 use \Exception;
