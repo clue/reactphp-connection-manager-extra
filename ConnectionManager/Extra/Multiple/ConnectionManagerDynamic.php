@@ -1,6 +1,6 @@
 <?php
 
-namespace ConnectionManager\Extra;
+namespace ConnectionManager\Extra\Multiple;
 
 use ConnectionManager\ConnectionManagerInterface;
 use \UnderflowException;
