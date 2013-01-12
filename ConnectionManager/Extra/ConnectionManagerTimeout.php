@@ -2,6 +2,10 @@
 
 namespace ConnectionManager\Extra;
 
+use ConnectionManager\ConnectionManagerInterface;
+use React\EventLoop\LoopInterface;
+use React\Promise\Deferred;
+
 class ConnectionManagerTimeout implements ConnectionManagerInterface
 {
     private $connectionManager;
@@ -20,7 +24,7 @@ class ConnectionManagerTimeout implements ConnectionManagerInterface
         $deferred = new Deferred();
         $timedout = false;
         
-        $tid = $this->loop->addTimeout($this->timeout, function() use ($deferred, &$timedout) {
+        $tid = $this->loop->addTimer($this->timeout, function() use ($deferred, &$timedout) {
             $deferred->reject(new Exception('Connection attempt timed out'));
             $timedout = true;
             // TODO: find a proper way to actually cancel the connection

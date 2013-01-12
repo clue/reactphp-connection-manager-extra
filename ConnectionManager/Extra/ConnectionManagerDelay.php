@@ -24,7 +24,7 @@ class ConnectionManagerDelay implements ConnectionManagerInterface
         $deferred = new Deferred();
         
         $connectionManager = $this->connectionManager;
-        $this->loop->addTimeout($this->delay, function() use ($deferred, $connectionManager, $host, $port) {
+        $this->loop->addTimer($this->delay, function() use ($deferred, $connectionManager, $host, $port) {
             $connectionManager->getConnect($host, $port)->then(
                 array($deferred, 'resolve'),
                 array($deferred, 'reject')

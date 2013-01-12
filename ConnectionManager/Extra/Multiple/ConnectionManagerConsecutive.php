@@ -2,6 +2,10 @@
 
 namespace ConnectionManager\Extra\Multiple;
 
+use ConnectionManager\ConnectionManagerInterface;
+use React\Promise\When;
+use \UnderflowException;
+
 class ConnectionManagerConsecutive implements ConnectionManagerInterface
 {
     private $managers = array();
