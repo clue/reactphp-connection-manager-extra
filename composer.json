@@ -1,0 +1,12 @@
+{
+    "name": "clue/connection-manager-extra",
+    "type": "library",
+    "homepage": "http://github.com/clue/connection-manager-extra",
+    "license": "MIT",
+    "autoload": {
+        "psr-0": {"ConnectionManager": ""}
+    },
+    "require": {
+        "clue/connection-manager": "0.1.*"
+    }
+}
