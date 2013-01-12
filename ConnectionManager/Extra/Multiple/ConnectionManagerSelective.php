@@ -6,7 +6,7 @@ use ConnectionManager\ConnectionManagerInterface;
 use \UnderflowException;
 use \InvalidArgumentException;
 
-class ConnectionManagerDynamic implements ConnectionManagerInterface
+class ConnectionManagerSelective implements ConnectionManagerInterface
 {
     private $targets = array();
 
