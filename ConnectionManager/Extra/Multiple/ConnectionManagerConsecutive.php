@@ -8,7 +8,7 @@ use \UnderflowException;
 
 class ConnectionManagerConsecutive implements ConnectionManagerInterface
 {
-    private $managers = array();
+    protected $managers = array();
     
     public function addConnectionManager(ConnectionManagerInterface $connectionManager)
     {
