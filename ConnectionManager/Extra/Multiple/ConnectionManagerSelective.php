@@ -8,6 +8,8 @@ use \InvalidArgumentException;
 
 class ConnectionManagerSelective implements ConnectionManagerInterface
 {
+    const MATCH_ALL = '*';
+    
     private $targets = array();
 
     public function getConnection($host, $port)
@@ -15,12 +17,14 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
         return $this->getConnectionManagerFor($host, $port)->getConnection($host, $port);
     }
 
-    public function addConnectionManager($connectionManager, $targetHost=null, $targetPort=null)
+    public function addConnectionManagerFor($connectionManager, $targetHost=self::MATCH_ALL, $targetPort=self::MATCH_ALL)
     {
         $this->targets []= array(
             'connectionManager' => $connectionManager,
             'matchHost' => $this->createMatcherHost($targetHost),
-            'matchPort' => $this->createMatcherPort($targetPort)
+            'matchPort' => $this->createMatcherPort($targetPort),
+            'host' => $targetHost,
+            'port' => $targetPort
         );
     }
 
@@ -34,14 +38,14 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
         throw new UnderflowException('No connection manager for given target found');
     }
 
-    // null OR *
+    // *
     // singlePort
     // startPort - targetPort
     // port1, port2, port3
     // startPort - targetPort, portAdditional
     public function createMatcherPort($pattern)
     {
-        if ($targetPort === null || $targetHost === '*') {
+        if ($pattern === self::MATCH_ALL) {
             return function() {
                 return true;
             };
@@ -83,14 +87,14 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
         return (int)$port;
     }
 
-    // null OR *
+    // *
     // targetHostname
     // targetIp
     // TODO: targetIp/netmaskNum
     // TODO: targetIp/netmaskIp
     public function createMatcherHost($pattern)
     {
-        if ($pattern === null || $pattern === '*') {
+        if ($pattern === self::MATCH_ALL) {
             return function() {
                 return true;
             };
