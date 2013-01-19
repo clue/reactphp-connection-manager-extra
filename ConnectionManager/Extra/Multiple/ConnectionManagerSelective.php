@@ -3,6 +3,7 @@
 namespace ConnectionManager\Extra\Multiple;
 
 use ConnectionManager\ConnectionManagerInterface;
+use React\Promise\When;
 use \UnderflowException;
 use \InvalidArgumentException;
 
@@ -14,7 +15,13 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
 
     public function getConnection($host, $port)
     {
-        return $this->getConnectionManagerFor($host, $port)->getConnection($host, $port);
+        try {
+            $cm = $this->getConnectionManagerFor($host, $port);
+        }
+        catch (Exception $e) {
+            return When::reject($e);
+        }
+        return $cm->getConnection($host, $port);
     }
 
     public function addConnectionManagerFor($connectionManager, $targetHost=self::MATCH_ALL, $targetPort=self::MATCH_ALL, $priority=0)
