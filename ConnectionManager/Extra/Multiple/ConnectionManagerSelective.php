@@ -17,19 +17,27 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
         return $this->getConnectionManagerFor($host, $port)->getConnection($host, $port);
     }
 
-    public function addConnectionManagerFor($connectionManager, $targetHost=self::MATCH_ALL, $targetPort=self::MATCH_ALL)
+    public function addConnectionManagerFor($connectionManager, $targetHost=self::MATCH_ALL, $targetPort=self::MATCH_ALL, $priority=0)
     {
         $this->targets []= array(
             'connectionManager' => $connectionManager,
             'matchHost' => $this->createMatcherHost($targetHost),
             'matchPort' => $this->createMatcherPort($targetPort),
-            'host' => $targetHost,
-            'port' => $targetPort
+            'host'      => $targetHost,
+            'port'      => $targetPort,
+            'priority'  => $priority
         );
         
         // return the key as new entry ID
         end($this->targets);
-        return key($this->targets);
+        $id = key($this->targets);
+        
+        // sort array by priority
+        uasort($this->targets, function ($a, $b) {
+            return ($a['priority'] < $b['priority'] ? -1 : ($a['priority'] > $b['priority'] ? 1 : 0));
+        });
+        
+        return $id;
     }
     
     public function getConnectionManagerEntries()
