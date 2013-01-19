@@ -31,11 +31,20 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
             'host' => $targetHost,
             'port' => $targetPort
         );
+        
+        // return the key as new entry ID
+        end($this->targets);
+        return key($this->targets);
     }
     
-    public function getConnectionManagers()
+    public function getConnectionManagerEntries()
     {
         return $this->targets;
+    }
+    
+    public function removeConnectionManagerEntry($id)
+    {
+        unset($this->targets[$id]);
     }
 
     public function getConnectionManagerFor($targetHost, $targetPort)
