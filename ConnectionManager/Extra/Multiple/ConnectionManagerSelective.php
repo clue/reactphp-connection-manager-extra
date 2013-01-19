@@ -16,11 +16,6 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
     {
         return $this->getConnectionManagerFor($host, $port)->getConnection($host, $port);
     }
-    
-    public function setConnectionManagerDefault($connectionManager)
-    {
-        return $this->addConnectionManagerFor($connectionManager);
-    }
 
     public function addConnectionManagerFor($connectionManager, $targetHost=self::MATCH_ALL, $targetPort=self::MATCH_ALL)
     {
