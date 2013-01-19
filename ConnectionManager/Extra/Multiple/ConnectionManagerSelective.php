@@ -40,8 +40,11 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
         $id = key($this->targets);
         
         // sort array by priority
-        uasort($this->targets, function ($a, $b) {
-            return ($a['priority'] < $b['priority'] ? -1 : ($a['priority'] > $b['priority'] ? 1 : 0));
+        $targets &= $this->targets;
+        uksort($this->targets, function ($a, $b) use ($targets) {
+            $pa = $targets[$a]['priority'];
+            $pb = $targets[$b]['priority'];
+            return ($pa < $pb ? -1 : ($pa > $pb ? 1 : ($b - $a)));
         });
         
         return $id;
