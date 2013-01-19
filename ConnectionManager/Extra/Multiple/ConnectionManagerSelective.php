@@ -90,6 +90,7 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
     // *
     // targetHostname
     // targetIp
+    // targetHostname, otherTargetHostname, anotherTargetHostname
     // TODO: targetIp/netmaskNum
     // TODO: targetIp/netmaskIp
     public function createMatcherHost($pattern)
@@ -97,6 +98,19 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
         if ($pattern === self::MATCH_ALL) {
             return function() {
                 return true;
+            };
+        } else if (strpos($pattern, ',') !== false) {
+            $checks = array();
+            foreach (explode(',', $pattern) as $part) {
+                $checks []= $this->createMatcherHost(trim($part));
+            }
+            return function ($host) use ($checks) {
+                foreach ($checks as $check) {
+                    if ($check($host)) {
+                        return true;
+                    }
+                }
+                return false;
             };
         } else if (is_string($pattern)) {
             $pattern = strtolower($pattern);
