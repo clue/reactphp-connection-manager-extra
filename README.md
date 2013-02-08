@@ -40,9 +40,12 @@ This section lists all this libraries' features along with some examples.
 The examples assume you've [installed](#install) this library and
 already [set up a `ConnectionManager` instance `$connectionManager`](https://github.com/clue/connection-manager#async-tcpip-connections).
 
-### Repeating / Retrying
+All classes are located in the `ConnectionManager\Extra` namespace.
 
-`ConnectionManager\Extra\ConnectionManagerRepeat`
+### Repeat
+
+The `ConnectionManagerRepeat($connectionManager, $repeat)` retries connecting to the given location up to a maximum
+of `$repeat` times when the connection fails.
 
 ```php
 $connectionManagerRepeater = new \ConnectionManager\Extra\ConnectionManagerRepeat($connectionManager, 3);
@@ -54,45 +57,43 @@ $connectionManagerRepeater->getConnection('www.google.com', 80)->then(function (
 
 ### Timeout
 
-`ConnectionManager\Extra\ConnectionManagerTimeout`
-Maximum timeout interval in seconds.
+The `ConnectionManagerTimeout($connectionManager, $timeout)` sets a maximum `$timeout` in seconds on when to give up
+waiting for the connection to complete.
 
 ### Delay
 
-`ConnectionManager\Extra\ConnectionManagerDelay`
-
-Similar to [timeout](#timeout), but instead of setting a maximum timeout, initial delay in seconds to pass before connection attempt
-
+The `ConnectionManagerDelay($connectionManager, $delay)` sets a fixed initial `$delay` in seconds before actually
+trying to connect. (Not to be confused with [`ConnectionManagerTimeout`](#timeout) which sets a _maximum timeout_.)
 
 ### Reject
 
-`ConnectionManager\Extra\ConnectionManagerReject`
-
-Simply reject every single connection attempt (particularly useful for below ManagerSelected)
-a simple connection manager that rejects every single connection attempt
+The `ConnectionManagerReject()` simply rejects every single connection attempt.
+This is particularly useful for the below [`ConnectionManagerSelective`][#selective] to reject connection attempts
+to only certain destinations (for example blocking advertisements or harmful sites).
 
 ### Swappable
 
-`ConnectionManager\Extra\ConnectionManagerSwappable`
-
-Interchangable during runtime.
-// connection manager decorator which simplifies exchanging the actual connection manager during runtime
+The `ConnectionManagerSwappable($connectionManager)` is a simple decorator for other `ConnectionManager`s to
+simplify exchanging the actual `ConnectionManager` during runtime (`->setConnectionManager($connectionManager)`).
 
 ### Consecutive
 
-`ConnectionManager\Extra\Multi\ConnectionManagerConsecutive`
-
-Multiple, select next and try each one once
+The `ConnectionManagerConsecutive($connectionManagers)` establishs connections by trying to connect through
+any of the given `ConnectionManager`s in consecutive order until the first one succeeds.
 
 ### Random
 
-`ConnectionManager\Extra\Multi\ConnectionManagerRandom`
+The `ConnectionManagerRandom($connectionManagers)` works much like `ConnectionManagerConsecutive` but instead
+of using a fixed order, it always uses a randomly shuffled order.
 
 ### Selective
 
-`ConnectionManager\Extra\Multi\ConnectionManagerSelective`
+The `ConnectionManagerSelective()` manages several `ConnectionManager`s and forwards connection through either of
+those besed on lists similar to to firewall or networking access control lists (ACLs).
 
-Similar to firewall / networking access control lists (ACLs).
+This allows fine-grained control on how to handle outgoing connections, like rejecting advertisements,
+delaying HTTP requests, or forwarding HTTPS connection through a foreign country.
+`->addConnectionManagerFor($connectionManager, $targetHost, $targetPort, $priority)`
 
 
 ## Install
