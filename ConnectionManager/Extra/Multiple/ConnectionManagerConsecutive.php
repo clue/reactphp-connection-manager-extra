@@ -17,7 +17,7 @@ class ConnectionManagerConsecutive implements ConnectionManagerInterface
     
     public function getConnection($host, $port)
     {
-        return tryConnection($this->managers, $host, $port);   
+        return $this->tryConnection($this->managers, $host, $port);   
     }
     
     /**
