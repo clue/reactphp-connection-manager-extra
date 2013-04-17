@@ -7,6 +7,6 @@
         "psr-0": {"ConnectionManager": ""}
     },
     "require": {
-        "clue/connection-manager": "0.1.*"
+        "react/socket-client": "0.3.*"
     }
 }
