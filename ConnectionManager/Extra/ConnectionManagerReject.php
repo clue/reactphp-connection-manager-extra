@@ -2,14 +2,14 @@
 
 namespace ConnectionManager\Extra;
 
-use ConnectionManager\ConnectionManagerInterface;
+use React\SocketClient\ConnectorInterface;
 use React\Promise\When;
 use \Exception;
 
 // a simple connection manager that rejects every single connection attempt
-class ConnectionManagerReject implements ConnectionManagerInterface
+class ConnectionManagerReject implements ConnectorInterface
 {
-    public function getConnection($host, $port)
+    public function create($host, $port)
     {
         return When::reject(new Exception('Connection rejected'));
     }

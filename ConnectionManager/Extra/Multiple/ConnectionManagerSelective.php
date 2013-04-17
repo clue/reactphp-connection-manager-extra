@@ -2,18 +2,18 @@
 
 namespace ConnectionManager\Extra\Multiple;
 
-use ConnectionManager\ConnectionManagerInterface;
+use React\SocketClient\ConnectorInterface;
 use React\Promise\When;
 use \UnderflowException;
 use \InvalidArgumentException;
 
-class ConnectionManagerSelective implements ConnectionManagerInterface
+class ConnectionManagerSelective implements ConnectorInterface
 {
     const MATCH_ALL = '*';
     
     private $targets = array();
 
-    public function getConnection($host, $port)
+    public function create($host, $port)
     {
         try {
             $cm = $this->getConnectionManagerFor($host, $port);
@@ -21,7 +21,7 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
         catch (Exception $e) {
             return When::reject($e);
         }
-        return $cm->getConnection($host, $port);
+        return $cm->create($host, $port);
     }
 
     public function addConnectionManagerFor($connectionManager, $targetHost=self::MATCH_ALL, $targetPort=self::MATCH_ALL, $priority=0)

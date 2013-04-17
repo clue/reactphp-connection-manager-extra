@@ -2,27 +2,27 @@
 
 namespace ConnectionManager\Extra\Multiple;
 
-use ConnectionManager\ConnectionManagerInterface;
+use React\SocketClient\ConnectorInterface;
 use React\Promise\When;
 use \UnderflowException;
 
-class ConnectionManagerConsecutive implements ConnectionManagerInterface
+class ConnectionManagerConsecutive implements ConnectorInterface
 {
     protected $managers = array();
     
-    public function addConnectionManager(ConnectionManagerInterface $connectionManager)
+    public function addConnectionManager(ConnectorInterface $connectionManager)
     {
         $this->managers []= $connectionManager;
     }
     
-    public function getConnection($host, $port)
+    public function create($host, $port)
     {
         return $this->tryConnection($this->managers, $host, $port);   
     }
     
     /**
      * 
-     * @param ConnectionManagerInterface[] $managers
+     * @param ConnectorInterface[] $managers
      * @param string $host
      * @param int $port
      * @return Promise
@@ -35,7 +35,7 @@ class ConnectionManagerConsecutive implements ConnectionManagerInterface
         }
         $manager = array_shift($managers);
         $that = $this;
-        return $manager->getConnection($host,$port)->then(null, function() use ($that, $managers, $host, $port) {
+        return $manager->create($host,$port)->then(null, function() use ($that, $managers, $host, $port) {
             // connection failed, re-try with remaining connection managers
             return $that->tryConnection($managers, $host, $port);
         });
