@@ -2,26 +2,26 @@
 
 namespace ConnectionManager\Extra\Multiple;
 
-use ConnectionManager\ConnectionManagerInterface;
+use React\SocketClient\ConnectorInterface;
 use React\Promise\When;
 use \UnderflowException;
 use \InvalidArgumentException;
 
-class ConnectionManagerSelective implements ConnectionManagerInterface
+class ConnectionManagerSelective implements ConnectorInterface
 {
     const MATCH_ALL = '*';
-    
+
     private $targets = array();
 
-    public function getConnection($host, $port)
+    public function create($host, $port)
     {
         try {
             $cm = $this->getConnectionManagerFor($host, $port);
         }
-        catch (Exception $e) {
+        catch (UnderflowException $e) {
             return When::reject($e);
         }
-        return $cm->getConnection($host, $port);
+        return $cm->create($host, $port);
     }
 
     public function addConnectionManagerFor($connectionManager, $targetHost=self::MATCH_ALL, $targetPort=self::MATCH_ALL, $priority=0)
@@ -34,11 +34,11 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
             'port'      => $targetPort,
             'priority'  => $priority
         );
-        
+
         // return the key as new entry ID
         end($this->targets);
         $id = key($this->targets);
-        
+
         // sort array by priority
         $targets =& $this->targets;
         uksort($this->targets, function ($a, $b) use ($targets) {
@@ -46,15 +46,15 @@ class ConnectionManagerSelective implements ConnectionManagerInterface
             $pb = $targets[$b]['priority'];
             return ($pa < $pb ? -1 : ($pa > $pb ? 1 : ($a - $b)));
         });
-        
+
         return $id;
     }
-    
+
     public function getConnectionManagerEntries()
     {
         return $this->targets;
     }
-    
+
     public function removeConnectionManagerEntry($id)
     {
         unset($this->targets[$id]);

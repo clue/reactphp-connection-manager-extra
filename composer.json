@@ -1,12 +1,14 @@
 {
     "name": "clue/connection-manager-extra",
+     "description": "Extra decorators for creating async TCP/IP connections built upon react/socket-client",
+    "keywords": ["SocketClient", "network", "connection", "timeout", "delay", "reject", "repeat", "retry", "random", "acl", "firewall"],
     "type": "library",
-    "homepage": "http://github.com/clue/connection-manager-extra",
+    "homepage": "https://github.com/clue/connection-manager-extra",
     "license": "MIT",
     "autoload": {
         "psr-0": {"ConnectionManager": ""}
     },
     "require": {
-        "clue/connection-manager": "0.1.*"
+        "react/socket-client": "0.3.*"
     }
 }

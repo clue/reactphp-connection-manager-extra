@@ -1,24 +1,24 @@
 # connection-manager-extra
 
 This project provides _extra_ (in terms of "additional", "extraordinary", "special" and "unusual") decorators
-built upon [connection-manager](https://github.com/clue/connection-manager).
+built upon [react/socket-client](https://github.com/reactphp/socket-client).
 
 ## Introduction
 
-If you're not already familar with [connection-manager](https://github.com/clue/connection-manager),
+If you're not already familar with [react/socket-client](https://github.com/reactphp/socket-client),
 think of it as an async (non-blocking) version of [`fsockopen()`](http://php.net/manual/en/function.fsockopen.php)
 or [`stream_socket_client()`](http://php.net/manual/en/function.stream-socket-client.php).
 I.e. before you can send and receive data to/from a remote server, you first have to establish a connection - which
 takes its time because it involves several steps.
-In order to be able to establish several connections at the same time, [connection-manager](https://github.com/clue/connection-manager) provides a simple
+In order to be able to establish several connections at the same time, [react/socket-client](https://github.com/reactphp/socket-client) provides a simple
 API to establish simple connections in an async (non-blocking) way.
 
-This project includes several classes that extend this base functionality by implementing the same simple `ConnectionManagerInterface`.
-This interface provides a single promise-based method `getConnection($host, $ip)` which can be used to easily notify
-when the connection is successfully established or the `ConnectionManager` gives up and the connection fails.
+This project includes several classes that extend this base functionality by implementing the same simple `ConnectorInterface`.
+This interface provides a single promise-based method `create($host, $ip)` which can be used to easily notify
+when the connection is successfully established or the `Connector` gives up and the connection fails.
 
 ```php
-$connectionManager->getConnection('www.google.com', 80)->then(function ($stream) {
+$connectionManager->create('www.google.com', 80)->then(function ($stream) {
     echo 'connection successfully established';
     $stream->write("GET / HTTP/1.0\r\nHost: www.google.com\r\n\r\n");
     $stream->end();
@@ -28,17 +28,17 @@ $connectionManager->getConnection('www.google.com', 80)->then(function ($stream)
 
 ```
 
-Because everything uses the same simple API, the resulting `ConnectionManager` classes can be easily interchanged
-and be used in places that expect the normal `ConnectionManagerInterface`. This can be used to stack them into each other,
+Because everything uses the same simple API, the resulting `Connector` classes can be easily interchanged
+and be used in places that expect the normal `ConnectorInterface`. This can be used to stack them into each other,
 like using [timeouts](#timeout) for TCP connections, [delaying](#delay) SSL/TLS connections,
-[retrying](#repeating--retrying) failed connection attemps, [randomly](#random) picking a `ConnectionManager` or
+[retrying](#repeating--retrying) failed connection attemps, [randomly](#random) picking a `Connector` or
 any combination thereof.
 
 ## Usage
 
 This section lists all this libraries' features along with some examples.
 The examples assume you've [installed](#install) this library and
-already [set up a `ConnectionManager` instance `$connectionManager`](https://github.com/clue/connection-manager#async-tcpip-connections).
+already [set up a `SocketClient/Connector` instance `$connectionManager`](https://github.com/reactphp/socket-client#async-tcpip-connections).
 
 All classes are located in the `ConnectionManager\Extra` namespace.
 
@@ -49,7 +49,7 @@ of `$repeat` times when the connection fails.
 
 ```php
 $connectionManagerRepeater = new \ConnectionManager\Extra\ConnectionManagerRepeat($connectionManager, 3);
-$connectionManagerRepeater->getConnection('www.google.com', 80)->then(function ($stream) {
+$connectionManagerRepeater->create('www.google.com', 80)->then(function ($stream) {
     echo 'connection successfully established';
     $stream->close();
 });
@@ -88,7 +88,7 @@ of using a fixed order, it always uses a randomly shuffled order.
 
 ### Selective
 
-The `ConnectionManagerSelective()` manages several `ConnectionManager`s and forwards connection through either of
+The `ConnectionManagerSelective()` manages several `Connector`s and forwards connection through either of
 those besed on lists similar to to firewall or networking access control lists (ACLs).
 
 This allows fine-grained control on how to handle outgoing connections, like rejecting advertisements,
