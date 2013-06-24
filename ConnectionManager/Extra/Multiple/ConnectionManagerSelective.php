@@ -10,7 +10,7 @@ use \InvalidArgumentException;
 class ConnectionManagerSelective implements ConnectorInterface
 {
     const MATCH_ALL = '*';
-    
+
     private $targets = array();
 
     public function create($host, $port)
@@ -18,7 +18,7 @@ class ConnectionManagerSelective implements ConnectorInterface
         try {
             $cm = $this->getConnectionManagerFor($host, $port);
         }
-        catch (Exception $e) {
+        catch (UnderflowException $e) {
             return When::reject($e);
         }
         return $cm->create($host, $port);
@@ -34,11 +34,11 @@ class ConnectionManagerSelective implements ConnectorInterface
             'port'      => $targetPort,
             'priority'  => $priority
         );
-        
+
         // return the key as new entry ID
         end($this->targets);
         $id = key($this->targets);
-        
+
         // sort array by priority
         $targets =& $this->targets;
         uksort($this->targets, function ($a, $b) use ($targets) {
@@ -46,15 +46,15 @@ class ConnectionManagerSelective implements ConnectorInterface
             $pb = $targets[$b]['priority'];
             return ($pa < $pb ? -1 : ($pa > $pb ? 1 : ($a - $b)));
         });
-        
+
         return $id;
     }
-    
+
     public function getConnectionManagerEntries()
     {
         return $this->targets;
     }
-    
+
     public function removeConnectionManagerEntry($id)
     {
         unset($this->targets[$id]);
