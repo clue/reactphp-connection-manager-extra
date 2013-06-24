@@ -1,4 +1,4 @@
-# connection-manager-extra
+# connection-manager-extra [![Build Status](https://travis-ci.org/clue/connection-manager-extra.png?branch=master)](https://travis-ci.org/clue/connection-manager-extra)
 
 This project provides _extra_ (in terms of "additional", "extraordinary", "special" and "unusual") decorators
 built upon [react/socket-client](https://github.com/reactphp/socket-client).
