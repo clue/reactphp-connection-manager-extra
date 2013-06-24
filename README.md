@@ -103,7 +103,7 @@ The recommended way to install this library is [through composer](http://getcomp
 ```JSON
 {
     "require": {
-        "clue/connection-manager-extra": "dev-master"
+        "clue/connection-manager-extra": "0.3.*"
     }
 }
 ```

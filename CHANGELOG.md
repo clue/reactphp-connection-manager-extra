@@ -4,7 +4,7 @@ This file is a manually maintained list of changes for each release. Feel free
 to add your changes here when sending pull requests. Also send corrections if
 you spot any mistakes.
 
-## 0.3.0 (2013-XX-XX)
+## 0.3.0 (2013-06-24)
 
 * BC break: Switch from (deprecated) `clue/connection-manager` to `react/socket-client`
 and thus replace each occurance of `getConnect($host, $port)` with `create($host, $port)` (#1)
