@@ -5,6 +5,7 @@ namespace ConnectionManager\Extra;
 use React\SocketClient\ConnectorInterface;
 use React\EventLoop\LoopInterface;
 use React\Promise\Deferred;
+use Exception;
 
 class ConnectionManagerTimeout implements ConnectorInterface
 {
