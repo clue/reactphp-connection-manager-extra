@@ -40,9 +40,9 @@ class ConnectionManagerTimeout implements ConnectorInterface
                 $loop->cancelTimer($tid);
                 $deferred->resolve($connection);
             }
-        }, function ($error) use ($loop, $tid) {
+        }, function ($error) use ($loop, $tid, $deferred) {
             $loop->cancelTimer($tid);
-            throw $error;
+            $deferred->reject($error);
         });
         return $deferred->promise();
     }
