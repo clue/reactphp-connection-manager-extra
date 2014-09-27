@@ -18,7 +18,7 @@ This interface provides a single promise-based method `create($host, $ip)` which
 when the connection is successfully established or the `Connector` gives up and the connection fails.
 
 ```php
-$connectionManager->create('www.google.com', 80)->then(function ($stream) {
+$connector->create('www.google.com', 80)->then(function ($stream) {
     echo 'connection successfully established';
     $stream->write("GET / HTTP/1.0\r\nHost: www.google.com\r\n\r\n");
     $stream->end();
@@ -38,18 +38,18 @@ any combination thereof.
 
 This section lists all this libraries' features along with some examples.
 The examples assume you've [installed](#install) this library and
-already [set up a `SocketClient/Connector` instance `$connectionManager`](https://github.com/reactphp/socket-client#async-tcpip-connections).
+already [set up a `SocketClient/Connector` instance `$connector`](https://github.com/reactphp/socket-client#async-tcpip-connections).
 
 All classes are located in the `ConnectionManager\Extra` namespace.
 
 ### Repeat
 
-The `ConnectionManagerRepeat($connectionManager, $repeat)` retries connecting to the given location up to a maximum
+The `ConnectionManagerRepeat($connector, $repeat)` retries connecting to the given location up to a maximum
 of `$repeat` times when the connection fails.
 
 ```php
-$connectionManagerRepeater = new \ConnectionManager\Extra\ConnectionManagerRepeat($connectionManager, 3);
-$connectionManagerRepeater->create('www.google.com', 80)->then(function ($stream) {
+$connectorRepeater = new \ConnectionManager\Extra\ConnectionManagerRepeat($connector, 3);
+$connectorRepeater->create('www.google.com', 80)->then(function ($stream) {
     echo 'connection successfully established';
     $stream->close();
 });
@@ -57,33 +57,33 @@ $connectionManagerRepeater->create('www.google.com', 80)->then(function ($stream
 
 ### Timeout
 
-The `ConnectionManagerTimeout($connectionManager, $timeout)` sets a maximum `$timeout` in seconds on when to give up
+The `ConnectionManagerTimeout($connector, $timeout)` sets a maximum `$timeout` in seconds on when to give up
 waiting for the connection to complete.
 
 ### Delay
 
-The `ConnectionManagerDelay($connectionManager, $delay)` sets a fixed initial `$delay` in seconds before actually
+The `ConnectionManagerDelay($connector, $delay)` sets a fixed initial `$delay` in seconds before actually
 trying to connect. (Not to be confused with [`ConnectionManagerTimeout`](#timeout) which sets a _maximum timeout_.)
 
 ### Reject
 
 The `ConnectionManagerReject()` simply rejects every single connection attempt.
-This is particularly useful for the below [`ConnectionManagerSelective`][#selective] to reject connection attempts
+This is particularly useful for the below [`ConnectionManagerSelective`](#selective) to reject connection attempts
 to only certain destinations (for example blocking advertisements or harmful sites).
 
 ### Swappable
 
-The `ConnectionManagerSwappable($connectionManager)` is a simple decorator for other `ConnectionManager`s to
-simplify exchanging the actual `ConnectionManager` during runtime (`->setConnectionManager($connectionManager)`).
+The `ConnectionManagerSwappable($connector)` is a simple decorator for other `ConnectionManager`s to
+simplify exchanging the actual `ConnectionManager` during runtime (`->setConnectionManager($connector)`).
 
 ### Consecutive
 
-The `ConnectionManagerConsecutive($connectionManagers)` establishs connections by trying to connect through
+The `ConnectionManagerConsecutive($connectors)` establishs connections by trying to connect through
 any of the given `ConnectionManager`s in consecutive order until the first one succeeds.
 
 ### Random
 
-The `ConnectionManagerRandom($connectionManagers)` works much like `ConnectionManagerConsecutive` but instead
+The `ConnectionManagerRandom($connectors)` works much like `ConnectionManagerConsecutive` but instead
 of using a fixed order, it always uses a randomly shuffled order.
 
 ### Selective
@@ -93,8 +93,10 @@ those besed on lists similar to to firewall or networking access control lists (
 
 This allows fine-grained control on how to handle outgoing connections, like rejecting advertisements,
 delaying HTTP requests, or forwarding HTTPS connection through a foreign country.
-`->addConnectionManagerFor($connectionManager, $targetHost, $targetPort, $priority)`
 
+```php
+$connectorSelective->addConnectionManagerFor($connector, $targetHost, $targetPort, $priority);
+```
 
 ## Install
 

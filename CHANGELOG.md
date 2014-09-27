@@ -7,10 +7,15 @@ you spot any mistakes.
 ## 0.3.0 (2013-06-24)
 
 * BC break: Switch from (deprecated) `clue/connection-manager` to `react/socket-client`
-and thus replace each occurance of `getConnect($host, $port)` with `create($host, $port)` (#1)
-* Fix: Timeouts in `ConnectionManagerTimeout` now actually work (#1)
+  and thus replace each occurance of `getConnect($host, $port)` with `create($host, $port)`
+  (#1)
+  
+* Fix: Timeouts in `ConnectionManagerTimeout` now actually work
+  (#1)
+
 * Fix: Properly reject promise in `ConnectionManagerSelective` when no targets
-have been found (#1)
+  have been found
+  (#1)
 
 ## 0.2.0 (2013-02-08)
 
