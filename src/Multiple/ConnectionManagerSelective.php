@@ -3,7 +3,7 @@
 namespace ConnectionManager\Extra\Multiple;
 
 use React\SocketClient\ConnectorInterface;
-use React\Promise\When;
+use React\Promise\Deferred;
 use \UnderflowException;
 use \InvalidArgumentException;
 
@@ -19,7 +19,9 @@ class ConnectionManagerSelective implements ConnectorInterface
             $cm = $this->getConnectionManagerFor($host, $port);
         }
         catch (UnderflowException $e) {
-            return When::reject($e);
+            $deferred = new Deferred();
+            $deferred->reject($e);
+            return $deferred->promise();
         }
         return $cm->create($host, $port);
     }

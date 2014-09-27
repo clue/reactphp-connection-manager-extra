@@ -1,6 +1,6 @@
 <?php
 
-use React\Promise\When;
+use React\Promise\Deferred;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -62,10 +62,13 @@ class TestCase extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $deferred = new Deferred();
+        $deferred->resolve($ret);
+
         $mock
             ->expects($this->any())
             ->method('create')
-            ->will($this->returnValue(When::resolve($ret)));
+            ->will($this->returnValue($deferred->promise()));
 
         return $mock;
     }
