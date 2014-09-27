@@ -14,6 +14,9 @@
         "psr-4": {"ConnectionManager\\Extra\\": "src"}
     },
     "require": {
-        "react/socket-client": "0.3.*"
+        "php": ">=5.3",
+        "react/socket-client": "0.3.*",
+        "react/event-loop": "0.3.*",
+        "react/promise": "~1.0"
     }
 }
