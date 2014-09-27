@@ -11,7 +11,7 @@
         }
     ],
     "autoload": {
-        "psr-0": {"ConnectionManager": ""}
+        "psr-4": {"ConnectionManager\\Extra\\": "src"}
     },
     "require": {
         "react/socket-client": "0.3.*"
