@@ -1,8 +1,9 @@
-# CHANGELOG
+# Changelog
 
-This file is a manually maintained list of changes for each release. Feel free
-to add your changes here when sending pull requests. Also send corrections if
-you spot any mistakes.
+## 0.3.2 (2016-03-19)
+
+* Compatibility with react/socket-client:v0.5 (keeping full BC)
+  (#6 by @clue)
 
 ## 0.3.1 (2014-09-27)
 
