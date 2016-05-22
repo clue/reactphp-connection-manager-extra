@@ -2,13 +2,13 @@
 
 <phpunit bootstrap="tests/bootstrap.php" colors="true">
     <testsuites>
-        <testsuite name="connection-manager-extra Test Suite">
-            <directory>./tests/</directory>
+        <testsuite>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory>./ConnectionManager</directory>
+            <directory>./src</directory>
         </whitelist>
     </filter>
 </phpunit>
