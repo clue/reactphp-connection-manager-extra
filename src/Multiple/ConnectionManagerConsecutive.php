@@ -3,8 +3,8 @@
 namespace ConnectionManager\Extra\Multiple;
 
 use React\SocketClient\ConnectorInterface;
-use React\Promise\Deferred;
-use \UnderflowException;
+use React\Promise;
+use UnderflowException;
 
 class ConnectionManagerConsecutive implements ConnectorInterface
 {
@@ -31,9 +31,7 @@ class ConnectionManagerConsecutive implements ConnectorInterface
     public function tryConnection(array $managers, $host, $port)
     {
         if (!$managers) {
-            $deferred = new Deferred();
-            $deferred->reject(new UnderflowException('No more managers to try to connect through'));
-            return $deferred->promise();
+            return Promise\reject(new UnderflowException('No more managers to try to connect through'));
         }
         $manager = array_shift($managers);
         $that = $this;

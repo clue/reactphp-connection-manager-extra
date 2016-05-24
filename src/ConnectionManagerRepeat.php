@@ -3,15 +3,14 @@
 namespace ConnectionManager\Extra;
 
 use React\SocketClient\ConnectorInterface;
-use \InvalidArgumentException;
-use React\Promise\Deferred;
-use \Exception;
+use InvalidArgumentException;
+use Exception;
 
 class ConnectionManagerRepeat implements ConnectorInterface
 {
     protected $connectionManager;
     protected $maximumRepetitions;
-    
+
     public function __construct(ConnectorInterface $connectionManager, $maximumRepetitons)
     {
         if ($maximumRepetitons < 1) {
@@ -20,12 +19,12 @@ class ConnectionManagerRepeat implements ConnectorInterface
         $this->connectionManager = $connectionManager;
         $this->maximumRepetitions = $maximumRepetitons;
     }
-    
+
     public function create($host, $port)
     {
         return $this->tryConnection($this->maximumRepetitions, $host, $port);
     }
-    
+
     public function tryConnection($repeat, $host, $port)
     {
         $that = $this;
