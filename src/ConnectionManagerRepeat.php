@@ -30,7 +30,7 @@ class ConnectionManagerRepeat implements ConnectorInterface
         $that = $this;
         return $this->connectionManager->create($host, $port)->then(
             null,
-            function ($error) use ($repeat, $that) {
+            function ($error) use ($repeat, $that, $host, $port) {
                 if ($repeat > 0) {
                     return $that->tryConnection($repeat - 1, $host, $port);
                 } else {

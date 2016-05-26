@@ -2,6 +2,7 @@
 
 use ConnectionManager\Extra\ConnectionManagerRepeat;
 use ConnectionManager\Extra\ConnectionManagerReject;
+use React\Promise;
 
 class ConnectionManagerRepeatTest extends TestCase
 {
@@ -14,6 +15,20 @@ class ConnectionManagerRepeatTest extends TestCase
         $this->assertInstanceOf('React\Promise\PromiseInterface', $promise);
 
         $promise->then($this->expectCallableNever(), $this->expectCallableOnce());
+    }
+
+    public function testOneRepetitionWillStartTwoConnectionAttempts()
+    {
+        $promise = Promise\reject(new \RuntimeException('nope'));
+
+        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector->expects($this->exactly(2))->method('create')->with('google.com', 80)->willReturn($promise);
+
+        $cm = new ConnectionManagerRepeat($connector, 1);
+
+        $promise = $cm->create('google.com', 80);
+
+        $this->assertPromiseReject($promise);
     }
 
     /**
