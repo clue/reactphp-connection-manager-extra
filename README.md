@@ -86,6 +86,11 @@ any of the given `ConnectionManager`s in consecutive order until the first one s
 The `ConnectionManagerRandom($connectors)` works much like `ConnectionManagerConsecutive` but instead
 of using a fixed order, it always uses a randomly shuffled order.
 
+### Concurrent
+
+The `ConnectionManagerConcurrent($connectors)` establishes connections by trying to connect through
+ALL of the given `ConnectionManager`s at once, until the first one succeeds.
+
 ### Selective
 
 The `ConnectionManagerSelective()` manages several `Connector`s and forwards connection through either of
