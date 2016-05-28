@@ -5,6 +5,7 @@ namespace ConnectionManager\Extra\Multiple;
 use React\SocketClient\ConnectorInterface;
 use React\Promise;
 use UnderflowException;
+use React\Promise\CancellablePromiseInterface;
 
 class ConnectionManagerConsecutive implements ConnectorInterface
 {
@@ -30,14 +31,26 @@ class ConnectionManagerConsecutive implements ConnectorInterface
      */
     public function tryConnection(array $managers, $host, $port)
     {
-        if (!$managers) {
-            return Promise\reject(new UnderflowException('No more managers to try to connect through'));
-        }
-        $manager = array_shift($managers);
-        $that = $this;
-        return $manager->create($host,$port)->then(null, function() use ($that, $managers, $host, $port) {
-            // connection failed, re-try with remaining connection managers
-            return $that->tryConnection($managers, $host, $port);
+        return new Promise\Promise(function ($resolve, $reject) use (&$managers, &$pending, $host, $port) {
+            $try = function () use (&$try, &$managers, $host, $port, $resolve, $reject, &$pending) {
+                if (!$managers) {
+                    return $reject(new UnderflowException('No more managers to try to connect through'));
+                }
+
+                $manager = array_shift($managers);
+                $pending = $manager->create($host, $port);
+                $pending->then($resolve, $try);
+            };
+
+            $try();
+        }, function ($_, $reject) use (&$managers, &$pending) {
+            // stop retrying, reject results and cancel pending attempt
+            $managers = array();
+            $reject(new \RuntimeException('Cancelled'));
+
+            if ($pending instanceof CancellablePromiseInterface) {
+                $pending->cancel();
+            }
         });
     }
 }

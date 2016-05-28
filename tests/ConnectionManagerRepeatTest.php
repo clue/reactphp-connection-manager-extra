@@ -39,4 +39,32 @@ class ConnectionManagerRepeatTest extends TestCase
         $wont = new ConnectionManagerReject();
         $cm = new ConnectionManagerRepeat($wont, -3);
     }
+
+    public function testCancellationWillNotStartAnyFurtherConnections()
+    {
+        $pending = new Promise\Promise(function () { }, $this->expectCallableOnce());
+
+        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
+
+        $cm = new ConnectionManagerRepeat($connector, 3);
+
+        $promise = $cm->create('google.com', 80);
+        $promise->cancel();
+    }
+
+    public function testCancellationWillNotStartAnyFurtherConnectionsIfPromiseRejectsOnCancellation()
+    {
+        $pending = new Promise\Promise(function () { }, function () {
+            throw new \RuntimeException('cancelled');
+        });
+
+        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
+
+        $cm = new ConnectionManagerRepeat($connector, 3);
+
+        $promise = $cm->create('google.com', 80);
+        $promise->cancel();
+    }
 }

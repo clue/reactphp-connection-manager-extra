@@ -17,7 +17,7 @@
         "php": ">=5.3",
         "react/socket-client": "^0.5 || ^0.4 || ^0.3",
         "react/event-loop": "^0.4 || ^0.3",
-        "react/promise": "^2.0 || ^1.1",
+        "react/promise": "^2.1 || ^1.2",
         "react/promise-timer": "^1.1"
     }
 }
