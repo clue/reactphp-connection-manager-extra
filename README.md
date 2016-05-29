@@ -100,15 +100,16 @@ $connectorSelective->addConnectionManagerFor($connector, $targetHost, $targetPor
 
 ## Install
 
-The recommended way to install this library is [through composer](http://getcomposer.org). [New to composer?](http://getcomposer.org/doc/00-intro.md)
+The recommended way to install this library is [through Composer](http://getcomposer.org).
+[New to Composer?](http://getcomposer.org/doc/00-intro.md)
 
-```JSON
-{
-    "require": {
-        "clue/connection-manager-extra": "0.3.*"
-    }
-}
+This will install the latest supported version:
+
+```bash
+$ composer require clue/connection-manager-extra:^0.3
 ```
+
+See also the [CHANGELOG](CHANGELOG.md) for more details about version upgrades.
 
 ## License
 

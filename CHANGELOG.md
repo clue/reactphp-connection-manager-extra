@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.3 (2016-05-29)
+
+* Fix repetitions for `ConnectionManagerRepeat`
+  (#8 by @clue)
+
+* First class support for PHP 5.3 through PHP 7 and HHVM
+  (#7 by @clue)
+
 ## 0.3.2 (2016-03-19)
 
 * Compatibility with react/socket-client:v0.5 (keeping full BC)
