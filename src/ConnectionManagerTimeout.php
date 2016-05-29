@@ -4,7 +4,7 @@ namespace ConnectionManager\Extra;
 
 use React\SocketClient\ConnectorInterface;
 use React\EventLoop\LoopInterface;
-use React\Promise\Deferred;
+use React\Promise\Timer;
 use Exception;
 
 class ConnectionManagerTimeout implements ConnectorInterface
@@ -22,28 +22,15 @@ class ConnectionManagerTimeout implements ConnectorInterface
 
     public function create($host, $port)
     {
-        $deferred = new Deferred();
-        $timedout = false;
+        $promise = $this->connectionManager->create($host, $port);
 
-        $tid = $this->loop->addTimer($this->timeout, function() use ($deferred, &$timedout) {
-            $deferred->reject(new Exception('Connection attempt timed out'));
-            $timedout = true;
-            // TODO: find a proper way to actually cancel the connection
-        });
-
-        $loop = $this->loop;
-        $this->connectionManager->create($host, $port)->then(function ($connection) use ($tid, $loop, &$timedout, $deferred) {
-            if ($timedout) {
-                // connection successfully established but timeout already expired => close successful connection
+        return Timer\timeout($promise, $this->timeout, $this->loop)->then(null, function ($e) use ($promise) {
+            // connection successfully established but timeout already expired => close successful connection
+            $promise->then(function ($connection) {
                 $connection->end();
-            } else {
-                $loop->cancelTimer($tid);
-                $deferred->resolve($connection);
-            }
-        }, function ($error) use ($loop, $tid, $deferred) {
-            $loop->cancelTimer($tid);
-            $deferred->reject($error);
+            });
+
+            throw $e;
         });
-        return $deferred->promise();
     }
 }

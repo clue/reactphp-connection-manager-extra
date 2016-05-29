@@ -4,7 +4,7 @@ namespace ConnectionManager\Extra;
 
 use React\SocketClient\ConnectorInterface;
 use React\EventLoop\LoopInterface;
-use React\Promise\Deferred;
+use React\Promise\Timer;
 
 class ConnectionManagerDelay implements ConnectorInterface
 {
@@ -21,15 +21,10 @@ class ConnectionManagerDelay implements ConnectorInterface
 
     public function create($host, $port)
     {
-        $deferred = new Deferred();
-
         $connectionManager = $this->connectionManager;
-        $this->loop->addTimer($this->delay, function() use ($deferred, $connectionManager, $host, $port) {
-            $connectionManager->create($host, $port)->then(
-                array($deferred, 'resolve'),
-                array($deferred, 'reject')
-            );
+
+        return Timer\resolve($this->delay, $this->loop)->then(function () use ($connectionManager, $host, $port) {
+            return $connectionManager->create($host, $port);
         });
-        return $deferred->promise();
     }
 }

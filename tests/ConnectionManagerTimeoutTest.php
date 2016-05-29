@@ -3,10 +3,10 @@
 use ConnectionManager\Extra\ConnectionManagerReject;
 
 use React\Stream\Stream;
-
 use ConnectionManager\Extra\ConnectionManagerDelay;
-
 use ConnectionManager\Extra\ConnectionManagerTimeout;
+use React\Promise\Promise;
+use React\Promise\Timer;
 
 class ConnectionManagerTimeoutTest extends TestCase
 {
@@ -52,5 +52,48 @@ class ConnectionManagerTimeoutTest extends TestCase
 
         $this->loop->run();
         $promise->then($this->expectCallableNever(), $this->expectCallableOnce());
+    }
+
+    public function testWillEndConnectionIfConnectionResolvesDespiteTimeout()
+    {
+        $stream = $this->getMockBuilder('React\Stream\Stream')->disableOriginalConstructor()->getMock();
+        $stream->expects($this->once())->method('end');
+
+        $loop = $this->loop;
+        $promise = new Promise(function ($resolve) use ($loop, $stream) {
+            $loop->addTimer(0.002, function () use ($resolve, $stream) {
+                $resolve($stream);
+            });
+        });
+
+        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector->expects($this->once())->method('create')->with('www.google.com', 80)->willReturn($promise);
+
+        $cm = new ConnectionManagerTimeout($connector, $this->loop, 0.001);
+
+        $promise = $cm->create('www.google.com', 80);
+
+        $this->loop->run();
+
+        $this->assertPromiseReject($promise);
+    }
+
+    public function testCancellationOfPromiseWillCancelConnectionAttempt()
+    {
+        $promise = new Promise(function () {}, function () {
+            throw new \RuntimeException();
+        });
+
+        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector->expects($this->once())->method('create')->with('www.google.com', 80)->willReturn($promise);
+
+        $cm = new ConnectionManagerTimeout($connector, $this->loop, 5.0);
+
+        $promise = $cm->create('www.google.com', 80);
+        $promise->cancel();
+
+        $this->loop->run();
+
+        $this->assertPromiseReject($promise);
     }
 }
