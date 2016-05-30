@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 (2016-05-30)
+
+* Feature: Add `ConnectionManagerConcurrent`
+  (#10 by @clue)
+
+* Feature: Support Promise cancellation for all connectors
+  (#9 by @clue)
+
 ## 0.3.3 (2016-05-29)
 
 * Fix repetitions for `ConnectionManagerRepeat`

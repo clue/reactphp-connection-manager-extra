@@ -1,7 +1,7 @@
 {
     "name": "clue/connection-manager-extra",
-     "description": "Extra decorators for creating async TCP/IP connections built upon react/socket-client",
-    "keywords": ["SocketClient", "network", "connection", "timeout", "delay", "reject", "repeat", "retry", "random", "acl", "firewall"],
+    "description": "Extra decorators for creating async TCP/IP connections built upon react/socket-client",
+    "keywords": ["SocketClient", "network", "connection", "timeout", "delay", "reject", "repeat", "retry", "random", "acl", "firewall", "ReactPHP"],
     "homepage": "https://github.com/clue/php-connection-manager-extra",
     "license": "MIT",
     "authors": [
@@ -11,7 +11,7 @@
         }
     ],
     "autoload": {
-        "psr-4": {"ConnectionManager\\Extra\\": "src"}
+        "psr-4": { "ConnectionManager\\Extra\\": "src" }
     },
     "require": {
         "php": ">=5.3",
