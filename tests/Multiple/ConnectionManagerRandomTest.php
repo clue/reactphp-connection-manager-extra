@@ -6,23 +6,19 @@ use React\Promise;
 
 class ConnectionManagerRandomTest extends TestCase
 {
-    public function testEmpty()
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testEmptyListThrows()
     {
-        $cm = new ConnectionManagerRandom();
-
-        $promise = $cm->create('www.google.com', 80);
-
-        $this->assertInstanceOf('React\Promise\PromiseInterface', $promise);
-
-        $promise->then($this->expectCallableNever(), $this->expectCallableOnce());
+        new ConnectionManagerRandom(array());
     }
 
     public function testReject()
     {
         $wont = new ConnectionManagerReject();
 
-        $cm = new ConnectionManagerRandom();
-        $cm->addConnectionManager($wont);
+        $cm = new ConnectionManagerRandom(array($wont));
 
         $promise = $cm->create('www.google.com', 80);
 
@@ -38,9 +34,7 @@ class ConnectionManagerRandomTest extends TestCase
         $connector = $this->getMock('React\SocketClient\ConnectorInterface');
         $connector->expects($this->exactly(2))->method('create')->with('google.com', 80)->willReturn($rejected);
 
-        $cm = new ConnectionManagerRandom();
-        $cm->addConnectionManager($connector);
-        $cm->addConnectionManager($connector);
+        $cm = new ConnectionManagerRandom(array($connector, $connector));
 
         $promise = $cm->create('google.com', 80);
 
@@ -54,9 +48,7 @@ class ConnectionManagerRandomTest extends TestCase
         $connector = $this->getMock('React\SocketClient\ConnectorInterface');
         $connector->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
 
-        $cm = new ConnectionManagerRandom();
-        $cm->addConnectionManager($connector);
-        $cm->addConnectionManager($connector);
+        $cm = new ConnectionManagerRandom(array($connector, $connector));
 
         $promise = $cm->create('google.com', 80);
         $promise->cancel();

@@ -9,11 +9,18 @@ use React\Promise\CancellablePromiseInterface;
 
 class ConnectionManagerConsecutive implements ConnectorInterface
 {
-    protected $managers = array();
+    protected $managers;
 
-    public function addConnectionManager(ConnectorInterface $connectionManager)
+    /**
+     *
+     * @param ConnectorInterface[] $managers
+     */
+    public function __construct(array $managers)
     {
-        $this->managers []= $connectionManager;
+        if (!$managers) {
+            throw new \InvalidArgumentException('List of connectors must not be empty');
+        }
+        $this->managers = $managers;
     }
 
     public function create($host, $port)
