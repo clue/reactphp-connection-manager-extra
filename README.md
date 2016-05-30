@@ -1,7 +1,23 @@
 # clue/connection-manager-extra [![Build Status](https://travis-ci.org/clue/php-connection-manager-extra.svg?branch=master)](https://travis-ci.org/clue/php-connection-manager-extra)
 
-This project provides _extra_ (in terms of "additional", "extraordinary", "special" and "unusual") decorators
-built upon [react/socket-client](https://github.com/reactphp/socket-client).
+This project provides _extra_ (in terms of "additional", "extraordinary", "special" and "unusual") decorators,
+built on top of [ReactPHP's SocketClient](https://github.com/reactphp/socket-client).
+
+**Table of Contents**
+
+* [Introduction](#introduction)
+* [Usage](#usage)
+  * [Repeat](#repeat)
+  * [Timeout](#timeout)
+  * [Delay](#delay)
+  * [Reject](#reject)
+  * [Swappable](#swappable)
+  * [Consecutive](#consecutive)
+  * [Random](#random)
+  * [Concurrent](#concurrent)
+  * [Selective](#selective)
+* [Install](#install)
+* [License](#license)
 
 ## Introduction
 
