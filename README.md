@@ -93,14 +93,56 @@ ALL of the given `ConnectionManager`s at once, until the first one succeeds.
 
 ### Selective
 
-The `ConnectionManagerSelective()` manages several `Connector`s and forwards connection through either of
-those besed on lists similar to to firewall or networking access control lists (ACLs).
+The `ConnectionManagerSelective($connectors)` manages a list of `Connector`s and
+forwards each connection through the first matching one.
+This can be used to implement networking access control lists (ACLs) or firewill
+rules like a blacklist or whitelist.
 
-This allows fine-grained control on how to handle outgoing connections, like rejecting advertisements,
-delaying HTTP requests, or forwarding HTTPS connection through a foreign country.
+This allows fine-grained control on how to handle outgoing connections, like
+rejecting advertisements, delaying unencrypted HTTP requests or forwarding HTTPS
+connection through a foreign country.
+
+If none of the entries in the list matches, the connection will be rejected.
+This can be used to implement a very simple whitelist like this: 
 
 ```php
-$connectorSelective->addConnectionManagerFor($connector, $targetHost, $targetPort, $priority);
+$selective = new ConnectionManagerSelective(array(
+    'github.com' => $connector,
+    '*:443' => $connector
+));
+```
+
+If you want to implement a blacklist (i.e. reject only certain targets), make
+sure to add a default target to the end of the list like this:
+
+```php
+$reject = new ConnectionManagerReject();
+$selective = new ConnectionManagerSelective(array(
+    'ads.example.com' => $reject,
+    '*:80-81' => $reject,
+    '*' => $connector
+));
+```
+
+Similarly, you can also combine any other the other connectors to implement more
+advanced connection setups, such as delaying unencrypted connections only and
+retrying unreliable hosts:
+
+```php
+// delay connection by 2 seconds
+$delayed = new ConnectionManagerDelay($connector, $loop, 2.0);
+
+// maximum of 3 tries, each taking no longer than 3 seconds
+$retry = new ConnectionManagerRepeat(
+    new ConnectionManagerTimeout($connector, $loop, 3.0),
+    2
+);
+
+$selective = new ConnectionManagerSelective(array(
+    '*:80' => $delayed,
+    'unreliable.example.com' => $retry,
+    '*' => $connector
+));
 ```
 
 ## Install
