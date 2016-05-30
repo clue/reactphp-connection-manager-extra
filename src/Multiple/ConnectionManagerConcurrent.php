@@ -10,6 +10,10 @@ class ConnectionManagerConcurrent extends ConnectionManagerConsecutive
 {
     public function create($host, $port)
     {
+        if (!$this->managers) {
+            return Promise\reject(new \UnderflowException('No managers to try to connect through'));
+        }
+
         $all = array();
         foreach ($this->managers as $connector) {
             /* @var $connection Connector */
