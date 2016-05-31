@@ -15,7 +15,7 @@ class ConnectionManagerDelayTest extends TestCase
     public function testDelayTenth()
     {
         $will = $this->createConnectionManagerMock(true);
-        $cm = new ConnectionManagerDelay($will, $this->loop, 0.1);
+        $cm = new ConnectionManagerDelay($will, 0.1, $this->loop);
 
         $promise = $cm->create('www.google.com', 80);
         $this->assertInstanceOf('React\Promise\PromiseInterface', $promise);
@@ -29,7 +29,7 @@ class ConnectionManagerDelayTest extends TestCase
         $unused = $this->getMock('React\SocketClient\ConnectorInterface');
         $unused->expects($this->never())->method('create');
 
-        $cm = new ConnectionManagerDelay($unused, $this->loop, 1.0);
+        $cm = new ConnectionManagerDelay($unused, 1.0, $this->loop);
 
         $promise = $cm->create('www.google.com', 80);
         $promise->cancel();

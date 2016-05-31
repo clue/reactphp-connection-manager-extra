@@ -10,6 +10,8 @@ use React\Promise\Timer;
 
 class ConnectionManagerTimeoutTest extends TestCase
 {
+    private $loop;
+
     public function setUp()
     {
         $this->loop = React\EventLoop\Factory::create();
@@ -18,7 +20,7 @@ class ConnectionManagerTimeoutTest extends TestCase
     public function testTimeoutOkay()
     {
         $will = $this->createConnectionManagerMock(true);
-        $cm = new ConnectionManagerTimeout($will, $this->loop, 0.1);
+        $cm = new ConnectionManagerTimeout($will, 0.1, $this->loop);
 
         $promise = $cm->create('www.google.com', 80);
         $this->assertInstanceOf('React\Promise\PromiseInterface', $promise);
@@ -30,9 +32,9 @@ class ConnectionManagerTimeoutTest extends TestCase
     public function testTimeoutExpire()
     {
         $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r'), $this->loop));
-        $wont = new ConnectionManagerDelay($will, $this->loop, 0.2);
+        $wont = new ConnectionManagerDelay($will, 0.2, $this->loop);
 
-        $cm = new ConnectionManagerTimeout($wont, $this->loop, 0.1);
+        $cm = new ConnectionManagerTimeout($wont, 0.1, $this->loop);
 
         $promise = $cm->create('www.google.com', 80);
         $this->assertInstanceOf('React\Promise\PromiseInterface', $promise);
@@ -45,7 +47,7 @@ class ConnectionManagerTimeoutTest extends TestCase
     {
         $wont = new ConnectionManagerReject();
 
-        $cm = new ConnectionManagerTimeout($wont, $this->loop, 0.1);
+        $cm = new ConnectionManagerTimeout($wont, 0.1, $this->loop);
 
         $promise = $cm->create('www.google.com', 80);
         $this->assertInstanceOf('React\Promise\PromiseInterface', $promise);
@@ -69,7 +71,7 @@ class ConnectionManagerTimeoutTest extends TestCase
         $connector = $this->getMock('React\SocketClient\ConnectorInterface');
         $connector->expects($this->once())->method('create')->with('www.google.com', 80)->willReturn($promise);
 
-        $cm = new ConnectionManagerTimeout($connector, $this->loop, 0.001);
+        $cm = new ConnectionManagerTimeout($connector, 0.001, $this->loop);
 
         $promise = $cm->create('www.google.com', 80);
 
@@ -87,7 +89,7 @@ class ConnectionManagerTimeoutTest extends TestCase
         $connector = $this->getMock('React\SocketClient\ConnectorInterface');
         $connector->expects($this->once())->method('create')->with('www.google.com', 80)->willReturn($promise);
 
-        $cm = new ConnectionManagerTimeout($connector, $this->loop, 5.0);
+        $cm = new ConnectionManagerTimeout($connector, 5.0, $this->loop);
 
         $promise = $cm->create('www.google.com', 80);
         $promise->cancel();

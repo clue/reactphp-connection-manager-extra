@@ -10,14 +10,14 @@ use Exception;
 class ConnectionManagerTimeout implements ConnectorInterface
 {
     private $connectionManager;
-    private $loop;
     private $timeout;
+    private $loop;
 
-    public function __construct(ConnectorInterface $connectionManager, LoopInterface $loop, $timeout)
+    public function __construct(ConnectorInterface $connectionManager, $timeout, LoopInterface $loop)
     {
         $this->connectionManager = $connectionManager;
-        $this->loop = $loop;
         $this->timeout = $timeout;
+        $this->loop = $loop;
     }
 
     public function create($host, $port)
