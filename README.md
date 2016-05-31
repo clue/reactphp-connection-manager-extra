@@ -44,11 +44,15 @@ All classes are located in the `ConnectionManager\Extra` namespace.
 
 ### Repeat
 
-The `ConnectionManagerRepeat($connector, $repeat)` retries connecting to the given location up to a maximum
-of `$repeat` times when the connection fails.
+The `ConnectionManagerRepeat($connector, $tries)` tries connecting to the given location up to a maximum
+of `$tries` times when the connection fails.
+
+If you pass a value of `3` to it, it will first issue a normal connection attempt
+and then retry up to 2 times if the connection attempt fails:
 
 ```php
-$connectorRepeater = new \ConnectionManager\Extra\ConnectionManagerRepeat($connector, 3);
+$connectorRepeater = new ConnectionManagerRepeat($connector, 3);
+
 $connectorRepeater->create('www.google.com', 80)->then(function ($stream) {
     echo 'connection successfully established';
     $stream->close();
