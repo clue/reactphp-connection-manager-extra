@@ -73,13 +73,21 @@ $connectorRepeater->create('www.google.com', 80)->then(function ($stream) {
 
 ### Timeout
 
-The `ConnectionManagerTimeout($connector, $timeout)` sets a maximum `$timeout` in seconds on when to give up
+The `ConnectionManagerTimeout($connector, $timeout, $loop)` sets a maximum `$timeout` in seconds on when to give up
 waiting for the connection to complete.
+
+```php
+$connector = new ConnectionManagerTimeout($connector, 3.0, $loop);
+```
 
 ### Delay
 
-The `ConnectionManagerDelay($connector, $delay)` sets a fixed initial `$delay` in seconds before actually
+The `ConnectionManagerDelay($connector, $delay, $loop)` sets a fixed initial `$delay` in seconds before actually
 trying to connect. (Not to be confused with [`ConnectionManagerTimeout`](#timeout) which sets a _maximum timeout_.)
+
+```php
+$delayed = new ConnectionManagerDelayed($connector, 0.5, $loop);
+```
 
 ### Reject
 
@@ -167,11 +175,11 @@ retrying unreliable hosts:
 
 ```php
 // delay connection by 2 seconds
-$delayed = new ConnectionManagerDelay($connector, $loop, 2.0);
+$delayed = new ConnectionManagerDelay($connector, 2.0, $loop);
 
 // maximum of 3 tries, each taking no longer than 3 seconds
 $retry = new ConnectionManagerRepeat(
-    new ConnectionManagerTimeout($connector, $loop, 3.0),
+    new ConnectionManagerTimeout($connector, 3.0, $loop),
     2
 );
 
