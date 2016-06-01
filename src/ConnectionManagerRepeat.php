@@ -11,25 +11,20 @@ use React\Promise\CancellablePromiseInterface;
 class ConnectionManagerRepeat implements ConnectorInterface
 {
     protected $connectionManager;
-    protected $maximumRepetitions;
+    protected $maximumTries;
 
-    public function __construct(ConnectorInterface $connectionManager, $maximumRepetitons)
+    public function __construct(ConnectorInterface $connectionManager, $maximumTries)
     {
-        if ($maximumRepetitons < 1) {
-            throw new InvalidArgumentException('Maximum number of repetitions must be >= 1');
+        if ($maximumTries < 1) {
+            throw new InvalidArgumentException('Maximum number of tries must be >= 1');
         }
         $this->connectionManager = $connectionManager;
-        $this->maximumRepetitions = $maximumRepetitons;
+        $this->maximumTries = $maximumTries;
     }
 
     public function create($host, $port)
     {
-        return $this->tryConnection($this->maximumRepetitions, $host, $port);
-    }
-
-    public function tryConnection($repeat, $host, $port)
-    {
-        $tries = $repeat + 1;
+        $tries = $this->maximumTries;
         $connector = $this->connectionManager;
 
         return new Promise(function ($resolve, $reject) use ($host, $port, &$pending, &$tries, $connector) {
@@ -39,7 +34,7 @@ class ConnectionManagerRepeat implements ConnectorInterface
                     $pending = $connector->create($host, $port);
                     $pending->then($resolve, $try);
                 } else {
-                    $reject(new Exception('Connection still fails even after repeating', 0, $error));
+                    $reject(new Exception('Connection still fails even after retrying', 0, $error));
                 }
             };
 

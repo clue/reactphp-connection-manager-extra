@@ -17,14 +17,14 @@ class ConnectionManagerRepeatTest extends TestCase
         $promise->then($this->expectCallableNever(), $this->expectCallableOnce());
     }
 
-    public function testOneRepetitionWillStartTwoConnectionAttempts()
+    public function testTwoTriesWillStartTwoConnectionAttempts()
     {
         $promise = Promise\reject(new \RuntimeException('nope'));
 
         $connector = $this->getMock('React\SocketClient\ConnectorInterface');
         $connector->expects($this->exactly(2))->method('create')->with('google.com', 80)->willReturn($promise);
 
-        $cm = new ConnectionManagerRepeat($connector, 1);
+        $cm = new ConnectionManagerRepeat($connector, 2);
 
         $promise = $cm->create('google.com', 80);
 
