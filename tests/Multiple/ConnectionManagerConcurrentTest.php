@@ -5,13 +5,12 @@ use React\Promise;
 
 class ConnectionManagerConcurrentTest extends TestCase
 {
-    public function testEmptyRejects()
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testEmptyListsThrows()
     {
-        $connector = new ConnectionManagerConcurrent();
-
-        $promise = $connector->create('google.com', 80);
-
-        $this->assertPromiseReject($promise);
+        new ConnectionManagerConcurrent(array());
     }
 
     public function testWillForwardToInnerConnector()
@@ -21,8 +20,7 @@ class ConnectionManagerConcurrentTest extends TestCase
         $only = $this->getMock('React\SocketClient\ConnectorInterface');
         $only->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
 
-        $connector = new ConnectionManagerConcurrent();
-        $connector->addConnectionManager($only);
+        $connector = new ConnectionManagerConcurrent(array($only));
 
         $promise = $connector->create('google.com', 80);
 
@@ -39,9 +37,7 @@ class ConnectionManagerConcurrentTest extends TestCase
         $second = $this->getMock('React\SocketClient\ConnectorInterface');
         $second->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
 
-        $connector = new ConnectionManagerConcurrent();
-        $connector->addConnectionManager($first);
-        $connector->addConnectionManager($second);
+        $connector = new ConnectionManagerConcurrent(array($first, $second));
 
         $promise = $connector->create('google.com', 80);
 
@@ -59,9 +55,7 @@ class ConnectionManagerConcurrentTest extends TestCase
         $second = $this->getMock('React\SocketClient\ConnectorInterface');
         $second->expects($this->once())->method('create')->with('google.com', 80)->willReturn(Promise\resolve($slower));
 
-        $connector = new ConnectionManagerConcurrent();
-        $connector->addConnectionManager($first);
-        $connector->addConnectionManager($second);
+        $connector = new ConnectionManagerConcurrent(array($first, $second));
 
         $promise = $connector->create('google.com', 80);
 

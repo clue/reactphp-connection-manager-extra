@@ -6,23 +6,19 @@ use React\Promise;
 
 class ConnectionManagerConsecutiveTest extends TestCase
 {
-    public function testEmpty()
+    /**
+     * @expectedException InvalidArgumentException
+     */
+    public function testEmptyListThrows()
     {
-        $cm = new ConnectionManagerConsecutive();
-
-        $promise = $cm->create('www.google.com', 80);
-
-        $this->assertInstanceOf('React\Promise\PromiseInterface', $promise);
-
-        $promise->then($this->expectCallableNever(), $this->expectCallableOnce());
+        new ConnectionManagerConsecutive(array());
     }
 
     public function testReject()
     {
         $wont = new ConnectionManagerReject();
 
-        $cm = new ConnectionManagerConsecutive();
-        $cm->addConnectionManager($wont);
+        $cm = new ConnectionManagerConsecutive(array($wont));
 
         $promise = $cm->create('www.google.com', 80);
 
@@ -38,9 +34,7 @@ class ConnectionManagerConsecutiveTest extends TestCase
         $connector = $this->getMock('React\SocketClient\ConnectorInterface');
         $connector->expects($this->exactly(2))->method('create')->with('google.com', 80)->willReturn($rejected);
 
-        $cm = new ConnectionManagerConsecutive();
-        $cm->addConnectionManager($connector);
-        $cm->addConnectionManager($connector);
+        $cm = new ConnectionManagerConsecutive(array($connector, $connector));
 
         $promise = $cm->create('google.com', 80);
 
@@ -54,9 +48,7 @@ class ConnectionManagerConsecutiveTest extends TestCase
         $connector = $this->getMock('React\SocketClient\ConnectorInterface');
         $connector->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
 
-        $cm = new ConnectionManagerConsecutive();
-        $cm->addConnectionManager($connector);
-        $cm->addConnectionManager($connector);
+        $cm = new ConnectionManagerConsecutive(array($connector, $connector));
 
         $promise = $cm->create('google.com', 80);
         $promise->cancel();

@@ -97,15 +97,36 @@ simplify exchanging the actual `ConnectionManager` during runtime (`->setConnect
 The `ConnectionManagerConsecutive($connectors)` establishs connections by trying to connect through
 any of the given `ConnectionManager`s in consecutive order until the first one succeeds.
 
+```php
+$consecutive = new ConnectionManagerConsecutive(array(
+    $connector1,
+    $connector2
+));
+```
+
 ### Random
 
 The `ConnectionManagerRandom($connectors)` works much like `ConnectionManagerConsecutive` but instead
 of using a fixed order, it always uses a randomly shuffled order.
 
+```php
+$random = new ConnectionManagerRandom(array(
+    $connector1,
+    $connector2
+));
+```
+
 ### Concurrent
 
 The `ConnectionManagerConcurrent($connectors)` establishes connections by trying to connect through
 ALL of the given `ConnectionManager`s at once, until the first one succeeds.
+
+```php
+$concurrent = new ConnectionManagerConcurrent(array(
+    $connector1,
+    $connector2
+));
+```
 
 ### Selective
 
