@@ -1,5 +1,66 @@
 # Changelog
 
+## 0.5.0 (2016-06-01)
+
+* BC break: Change $retries to $tries
+  (#14 by @clue)
+  
+  ```php
+  // old
+  // 1 try plus 2 retries => 3 total tries
+  $c = new ConnectionManagerRepeat($c, 2);
+  
+  // new
+  // 3 total tries (1 try plus 2 retries)
+  $c = new ConnectionManagerRepeat($c, 3);
+  ```
+
+* BC break: Timed connectors now use $loop as last argument
+  (#13 by @clue)
+  
+  ```php
+  // old
+  // $c = new ConnectionManagerDelay($c, $loop, 1.0);
+  $c = new ConnectionManagerTimeout($c, $loop, 1.0);
+  
+  // new
+  $c = new ConnectionManagerTimeout($c, 1.0, $loop);
+  ```
+
+* BC break: Move all connector lists to the constructor
+  (#12 by @clue)
+
+  ```php
+  // old
+  // $c = new ConnectionManagerConcurrent();
+  // $c = new ConnectionManagerRandom();
+  $c = new ConnectionManagerConsecutive();
+  $c->addConnectionManager($c1);
+  $c->addConnectionManager($c2);
+  
+  // new
+  $c = new ConnectionManagerConsecutive(array(
+      $c1,
+      $c2
+  ));
+  ```
+
+* BC break: ConnectionManagerSelective now accepts connector list in constructor
+  (#11 by @clue)
+
+  ```php
+  // old
+  $c = new ConnectionManagerSelective();
+  $c->addConnectionManagerFor($c1, 'host1');
+  $c->addConnectionManagerFor($c2, 'host2');
+  
+  // new
+  $c = new ConnectionManagerSelective(array(
+      'host1' => $c1,
+      'host2' => $c2
+  ));
+  ```
+
 ## 0.4.0 (2016-05-30)
 
 * Feature: Add `ConnectionManagerConcurrent`
