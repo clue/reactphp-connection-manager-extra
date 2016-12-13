@@ -173,7 +173,7 @@ $selective = new ConnectionManagerSelective(array(
 ));
 ```
 
-Similarly, you can also combine any other the other connectors to implement more
+Similarly, you can also combine any of the other connectors to implement more
 advanced connection setups, such as delaying unencrypted connections only and
 retrying unreliable hosts:
 
@@ -181,10 +181,10 @@ retrying unreliable hosts:
 // delay connection by 2 seconds
 $delayed = new ConnectionManagerDelay($connector, 2.0, $loop);
 
-// maximum of 3 tries, each taking no longer than 3 seconds
+// maximum of 3 tries, each taking no longer than 2.0 seconds
 $retry = new ConnectionManagerRepeat(
-    new ConnectionManagerTimeout($connector, 3.0, $loop),
-    2
+    new ConnectionManagerTimeout($connector, 2.0, $loop),
+    3
 );
 
 $selective = new ConnectionManagerSelective(array(
