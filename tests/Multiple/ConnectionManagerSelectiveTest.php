@@ -11,7 +11,7 @@ class ConnectionManagerSelectiveTest extends TestCase
     {
         $cm = new ConnectionManagerSelective(array());
 
-        $promise = $cm->create('www.google.com', 80);
+        $promise = $cm->connect('www.google.com:80');
         $this->assertPromiseReject($promise);
     }
 
@@ -81,13 +81,13 @@ class ConnectionManagerSelectiveTest extends TestCase
         $promise = $this->getMockBuilder('React\Promise\PromiseInterface')->getMock();
 
         $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $connector->expects($this->once())->method('create')->with('example.com', 80)->willReturn($promise);
+        $connector->expects($this->once())->method('connect')->with('example.com:80')->willReturn($promise);
 
         $cm = new ConnectionManagerSelective(array(
             'example.com' => $connector
         ));
 
-        $ret = $cm->create('example.com' , 80);
+        $ret = $cm->connect('example.com:80');
 
         $this->assertSame($promise, $ret);
     }
@@ -97,13 +97,13 @@ class ConnectionManagerSelectiveTest extends TestCase
         $promise = $this->getMockBuilder('React\Promise\PromiseInterface')->getMock();
 
         $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $connector->expects($this->once())->method('create')->with('::1', 80)->willReturn($promise);
+        $connector->expects($this->once())->method('connect')->with('[::1]:80')->willReturn($promise);
 
         $cm = new ConnectionManagerSelective(array(
             '::1' => $connector
         ));
 
-        $ret = $cm->create('::1' , 80);
+        $ret = $cm->connect('[::1]:80');
 
         $this->assertSame($promise, $ret);
     }
@@ -113,13 +113,13 @@ class ConnectionManagerSelectiveTest extends TestCase
         $promise = $this->getMockBuilder('React\Promise\PromiseInterface')->getMock();
 
         $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $connector->expects($this->once())->method('create')->with('::1', 80)->willReturn($promise);
+        $connector->expects($this->once())->method('connect')->with('[::1]:80')->willReturn($promise);
 
         $cm = new ConnectionManagerSelective(array(
             '[::1]:80' => $connector
         ));
 
-        $ret = $cm->create('::1' , 80);
+        $ret = $cm->connect('[::1]:80');
 
         $this->assertSame($promise, $ret);
     }
@@ -127,50 +127,50 @@ class ConnectionManagerSelectiveTest extends TestCase
     public function testNotMatchingDomainWillReject()
     {
         $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $connector->expects($this->never())->method('create');
+        $connector->expects($this->never())->method('connect');
 
         $cm = new ConnectionManagerSelective(array(
             'example.com' => $connector
         ));
 
-        $promise = $cm->create('other.example.com' , 80);
+        $promise = $cm->connect('other.example.com:80');
 
         $this->assertPromiseReject($promise);
     }
 
     public function testReject()
     {
-        $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r'), $this->createLoopMock()));
+        $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r+'), $this->createLoopMock()));
 
         $cm = new ConnectionManagerSelective(array(
             'www.google.com:443' => $will,
             'www.youtube.com' => $will
         ));
 
-        $this->assertPromiseResolve($cm->create('www.google.com', 443));
+        $this->assertPromiseResolve($cm->connect('www.google.com:443'));
 
-        $this->assertPromiseReject($cm->create('www.google.com', 80));
+        $this->assertPromiseReject($cm->connect('www.google.com:80'));
 
-        $this->assertPromiseResolve($cm->create('www.youtube.com', 80));
+        $this->assertPromiseResolve($cm->connect('www.youtube.com:80'));
     }
 
     public function testFirstEntryWinsIfMultipleMatch()
     {
         $wont = new ConnectionManagerReject();
-        $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r'), $this->createLoopMock()));
+        $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r+'), $this->createLoopMock()));
 
         $cm = new ConnectionManagerSelective(array(
             'www.google.com:443' => $will,
             '*' => $wont
         ));
 
-        $this->assertPromiseResolve($cm->create('www.google.com', 443));
-        $this->assertPromiseReject($cm->create('www.google.com', 80));
+        $this->assertPromiseResolve($cm->connect('www.google.com:443'));
+        $this->assertPromiseReject($cm->connect('www.google.com:80'));
     }
 
     public function testWildcardsMatch()
     {
-        $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r'), $this->createLoopMock()));
+        $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r+'), $this->createLoopMock()));
 
         $cm = new ConnectionManagerSelective(array(
             '*.com' => $will,
@@ -180,17 +180,17 @@ class ConnectionManagerSelectiveTest extends TestCase
             'youtube.*' => $will,
         ));
 
-        $this->assertPromiseResolve($cm->create('www.google.com', 80));
-        $this->assertPromiseReject($cm->create('www.google.de', 80));
+        $this->assertPromiseResolve($cm->connect('www.google.com:80'));
+        $this->assertPromiseReject($cm->connect('www.google.de:80'));
 
-        $this->assertPromiseResolve($cm->create('www.google.de', 443));
-        $this->assertPromiseResolve($cm->create('www.google.de', 444));
-        $this->assertPromiseResolve($cm->create('www.google.de', 8080));
-        $this->assertPromiseReject($cm->create('www.google.de', 445));
+        $this->assertPromiseResolve($cm->connect('www.google.de:443'));
+        $this->assertPromiseResolve($cm->connect('www.google.de:444'));
+        $this->assertPromiseResolve($cm->connect('www.google.de:8080'));
+        $this->assertPromiseReject($cm->connect('www.google.de:445'));
 
-        $this->assertPromiseResolve($cm->create('www.youtube.de', 80));
-        $this->assertPromiseResolve($cm->create('download.youtube.de', 80));
-        $this->assertPromiseResolve($cm->create('youtube.de', 80));
+        $this->assertPromiseResolve($cm->connect('www.youtube.de:80'));
+        $this->assertPromiseResolve($cm->connect('download.youtube.de:80'));
+        $this->assertPromiseResolve($cm->connect('youtube.de:80'));
     }
 
     private function createLoopMock()

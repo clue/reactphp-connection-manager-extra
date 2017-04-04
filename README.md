@@ -31,11 +31,11 @@ In order to be able to establish several connections at the same time, [react/so
 API to establish simple connections in an async (non-blocking) way.
 
 This project includes several classes that extend this base functionality by implementing the same simple `ConnectorInterface`.
-This interface provides a single promise-based method `create($host, $ip)` which can be used to easily notify
+This interface provides a single promise-based method `connect($uri)` which can be used to easily notify
 when the connection is successfully established or the `Connector` gives up and the connection fails.
 
 ```php
-$connector->create('www.google.com', 80)->then(function ($stream) {
+$connector->connect('www.google.com:80')->then(function ($stream) {
     echo 'connection successfully established';
     $stream->write("GET / HTTP/1.0\r\nHost: www.google.com\r\n\r\n");
     $stream->end();
@@ -70,7 +70,7 @@ and then retry up to 2 times if the connection attempt fails:
 ```php
 $connectorRepeater = new ConnectionManagerRepeat($connector, 3);
 
-$connectorRepeater->create('www.google.com', 80)->then(function ($stream) {
+$connectorRepeater->connect('www.google.com:80')->then(function ($stream) {
     echo 'connection successfully established';
     $stream->close();
 });

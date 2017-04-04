@@ -20,9 +20,9 @@ class ConnectionManagerTimeout implements ConnectorInterface
         $this->loop = $loop;
     }
 
-    public function create($host, $port)
+    public function connect($uri)
     {
-        $promise = $this->connectionManager->create($host, $port);
+        $promise = $this->connectionManager->connect($uri);
 
         return Timer\timeout($promise, $this->timeout, $this->loop)->then(null, function ($e) use ($promise) {
             // connection successfully established but timeout already expired => close successful connection

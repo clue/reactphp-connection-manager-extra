@@ -14,9 +14,9 @@ class ConnectionManagerSwappable implements ConnectorInterface
         $this->connectionManager = $connectionManager;
     }
 
-    public function create($host, $port)
+    public function connect($uri)
     {
-        return $this->connectionManager->create($host, $port);
+        return $this->connectionManager->connect($uri);
     }
 
     public function setConnectionManager(ConnectorInterface $connectionManager)

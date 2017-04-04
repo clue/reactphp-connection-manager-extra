@@ -4,11 +4,11 @@ namespace ConnectionManager\Extra\Multiple;
 
 class ConnectionManagerRandom extends ConnectionManagerConsecutive
 {
-    public function create($host, $port)
+    public function connect($uri)
     {
         $managers = $this->managers;
         shuffle($managers);
-        
-        return $this->tryConnection($managers, $host, $port);
+
+        return $this->tryConnection($managers, $uri);
     }
 }

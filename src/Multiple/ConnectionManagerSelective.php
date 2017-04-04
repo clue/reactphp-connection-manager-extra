@@ -63,14 +63,22 @@ class ConnectionManagerSelective implements ConnectorInterface
         $this->managers = $managers;
     }
 
-    public function create($host, $port)
+    public function connect($uri)
     {
         try {
-            $connector = $this->getConnectorForTarget($host, $port);
+            $parts = parse_url('tcp://' . $uri);
+            if (!isset($parts) || !isset($parts['scheme'], $parts['host'], $parts['port'])) {
+                throw new InvalidArgumentException('Invalid URI');
+            }
+
+            $connector = $this->getConnectorForTarget(
+                trim($parts['host'], '[]'),
+                $parts['port']
+            );
         } catch (UnderflowException $e) {
             return Promise\reject($e);
         }
-        return $connector->create($host, $port);
+        return $connector->connect($uri);
     }
 
     private function getConnectorForTarget($targetHost, $targetPort)

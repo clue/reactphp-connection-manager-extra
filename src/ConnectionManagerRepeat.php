@@ -22,16 +22,16 @@ class ConnectionManagerRepeat implements ConnectorInterface
         $this->maximumTries = $maximumTries;
     }
 
-    public function create($host, $port)
+    public function connect($uri)
     {
         $tries = $this->maximumTries;
         $connector = $this->connectionManager;
 
-        return new Promise(function ($resolve, $reject) use ($host, $port, &$pending, &$tries, $connector) {
-            $try = function ($error = null) use (&$try, &$pending, &$tries, $host, $port, $connector, $resolve, $reject) {
+        return new Promise(function ($resolve, $reject) use ($uri, &$pending, &$tries, $connector) {
+            $try = function ($error = null) use (&$try, &$pending, &$tries, $uri, $connector, $resolve, $reject) {
                 if ($tries > 0) {
                     --$tries;
-                    $pending = $connector->create($host, $port);
+                    $pending = $connector->connect($uri);
                     $pending->then($resolve, $try);
                 } else {
                     $reject(new Exception('Connection still fails even after retrying', 0, $error));
