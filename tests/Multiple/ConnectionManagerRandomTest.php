@@ -31,7 +31,7 @@ class ConnectionManagerRandomTest extends TestCase
     {
         $rejected = Promise\reject(new \RuntimeException('nope'));
 
-        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
         $connector->expects($this->exactly(2))->method('create')->with('google.com', 80)->willReturn($rejected);
 
         $cm = new ConnectionManagerRandom(array($connector, $connector));
@@ -45,7 +45,7 @@ class ConnectionManagerRandomTest extends TestCase
     {
         $pending = new Promise\Promise(function () { }, $this->expectCallableOnce());
 
-        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
 
         $cm = new ConnectionManagerRandom(array($connector, $connector));

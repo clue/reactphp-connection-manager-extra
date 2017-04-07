@@ -69,7 +69,7 @@ class ConnectionManagerSelectiveTest extends TestCase
      */
     public function testInvalidMatcherThrowsException($matcher)
     {
-        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
 
         new ConnectionManagerSelective(array(
             $matcher => $connector
@@ -78,9 +78,9 @@ class ConnectionManagerSelectiveTest extends TestCase
 
     public function testExactDomainMatchForwardsToConnector()
     {
-        $promise = $this->getMock('React\Promise\PromiseInterface');
+        $promise = $this->getMockBuilder('React\Promise\PromiseInterface')->getMock();
 
-        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('create')->with('example.com', 80)->willReturn($promise);
 
         $cm = new ConnectionManagerSelective(array(
@@ -94,9 +94,9 @@ class ConnectionManagerSelectiveTest extends TestCase
 
     public function testExactIpv6MatchForwardsToConnector()
     {
-        $promise = $this->getMock('React\Promise\PromiseInterface');
+        $promise = $this->getMockBuilder('React\Promise\PromiseInterface')->getMock();
 
-        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('create')->with('::1', 80)->willReturn($promise);
 
         $cm = new ConnectionManagerSelective(array(
@@ -110,9 +110,9 @@ class ConnectionManagerSelectiveTest extends TestCase
 
     public function testExactIpv6WithPortMatchForwardsToConnector()
     {
-        $promise = $this->getMock('React\Promise\PromiseInterface');
+        $promise = $this->getMockBuilder('React\Promise\PromiseInterface')->getMock();
 
-        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('create')->with('::1', 80)->willReturn($promise);
 
         $cm = new ConnectionManagerSelective(array(
@@ -126,7 +126,7 @@ class ConnectionManagerSelectiveTest extends TestCase
 
     public function testNotMatchingDomainWillReject()
     {
-        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
         $connector->expects($this->never())->method('create');
 
         $cm = new ConnectionManagerSelective(array(

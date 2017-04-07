@@ -21,7 +21,7 @@ class ConnectionManagerRepeatTest extends TestCase
     {
         $promise = Promise\reject(new \RuntimeException('nope'));
 
-        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
         $connector->expects($this->exactly(2))->method('create')->with('google.com', 80)->willReturn($promise);
 
         $cm = new ConnectionManagerRepeat($connector, 2);
@@ -44,7 +44,7 @@ class ConnectionManagerRepeatTest extends TestCase
     {
         $pending = new Promise\Promise(function () { }, $this->expectCallableOnce());
 
-        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
 
         $cm = new ConnectionManagerRepeat($connector, 3);
@@ -59,7 +59,7 @@ class ConnectionManagerRepeatTest extends TestCase
             throw new \RuntimeException('cancelled');
         });
 
-        $connector = $this->getMock('React\SocketClient\ConnectorInterface');
+        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
 
         $cm = new ConnectionManagerRepeat($connector, 3);
