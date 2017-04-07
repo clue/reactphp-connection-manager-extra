@@ -48,7 +48,7 @@ $connector->connect('www.google.com:80')->then(function ($stream) {
 Because everything uses the same simple API, the resulting `Connector` classes can be easily interchanged
 and be used in places that expect the normal `ConnectorInterface`. This can be used to stack them into each other,
 like using [timeouts](#timeout) for TCP connections, [delaying](#delay) SSL/TLS connections,
-[retrying](#repeating--retrying) failed connection attemps, [randomly](#random) picking a `Connector` or
+[retrying](#repeat) failed connection attemps, [randomly](#random) picking a `Connector` or
 any combination thereof.
 
 ## Usage
@@ -203,7 +203,7 @@ The recommended way to install this library is [through Composer](http://getcomp
 This will install the latest supported version:
 
 ```bash
-$ composer require clue/connection-manager-extra:^0.5
+$ composer require clue/connection-manager-extra:^0.6
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for more details about version upgrades.

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.0 (2016-04-07)
+
+* Feature / BC break: Update SocketClient to v0.7 or v0.6
+  (#16 by @clue)
+
+* Improve test suite by adding PHPUnit to require-dev
+  (#15 by @clue)
+
 ## 0.5.0 (2016-06-01)
 
 * BC break: Change $retries to $tries
