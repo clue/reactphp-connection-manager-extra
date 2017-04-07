@@ -23,29 +23,28 @@ class ConnectionManagerConsecutive implements ConnectorInterface
         $this->managers = $managers;
     }
 
-    public function create($host, $port)
+    public function connect($uri)
     {
-        return $this->tryConnection($this->managers, $host, $port);
+        return $this->tryConnection($this->managers, $uri);
     }
 
     /**
      *
      * @param ConnectorInterface[] $managers
-     * @param string $host
-     * @param int $port
+     * @param string $uri
      * @return Promise
      * @internal
      */
-    public function tryConnection(array $managers, $host, $port)
+    public function tryConnection(array $managers, $uri)
     {
-        return new Promise\Promise(function ($resolve, $reject) use (&$managers, &$pending, $host, $port) {
-            $try = function () use (&$try, &$managers, $host, $port, $resolve, $reject, &$pending) {
+        return new Promise\Promise(function ($resolve, $reject) use (&$managers, &$pending, $uri) {
+            $try = function () use (&$try, &$managers, $uri, $resolve, $reject, &$pending) {
                 if (!$managers) {
                     return $reject(new UnderflowException('No more managers to try to connect through'));
                 }
 
                 $manager = array_shift($managers);
-                $pending = $manager->create($host, $port);
+                $pending = $manager->connect($uri);
                 $pending->then($resolve, $try);
             };
 

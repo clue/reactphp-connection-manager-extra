@@ -19,12 +19,12 @@ class ConnectionManagerDelay implements ConnectorInterface
         $this->loop = $loop;
     }
 
-    public function create($host, $port)
+    public function connect($uri)
     {
         $connectionManager = $this->connectionManager;
 
-        return Timer\resolve($this->delay, $this->loop)->then(function () use ($connectionManager, $host, $port) {
-            return $connectionManager->create($host, $port);
+        return Timer\resolve($this->delay, $this->loop)->then(function () use ($connectionManager, $uri) {
+            return $connectionManager->connect($uri);
         });
     }
 }

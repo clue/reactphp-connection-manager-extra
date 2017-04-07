@@ -8,12 +8,12 @@ use React\Promise\CancellablePromiseInterface;
 
 class ConnectionManagerConcurrent extends ConnectionManagerConsecutive
 {
-    public function create($host, $port)
+    public function connect($uri)
     {
         $all = array();
         foreach ($this->managers as $connector) {
             /* @var $connection Connector */
-            $all []= $connector->create($host, $port);
+            $all []= $connector->connect($uri);
         }
         return Promise\any($all)->then(function ($conn) use ($all) {
             // a connection attempt succeeded

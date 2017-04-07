@@ -9,7 +9,7 @@ use Exception;
 // a simple connection manager that rejects every single connection attempt
 class ConnectionManagerReject implements ConnectorInterface
 {
-    public function create($host, $port)
+    public function connect($_)
     {
         return Promise\reject(new Exception('Connection rejected'));
     }

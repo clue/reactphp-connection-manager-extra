@@ -10,7 +10,7 @@ class ConnectionManagerRepeatTest extends TestCase
     {
         $wont = new ConnectionManagerReject();
         $cm = new ConnectionManagerRepeat($wont, 3);
-        $promise = $cm->create('www.google.com', 80);
+        $promise = $cm->connect('www.google.com:80');
 
         $this->assertInstanceOf('React\Promise\PromiseInterface', $promise);
 
@@ -22,11 +22,11 @@ class ConnectionManagerRepeatTest extends TestCase
         $promise = Promise\reject(new \RuntimeException('nope'));
 
         $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $connector->expects($this->exactly(2))->method('create')->with('google.com', 80)->willReturn($promise);
+        $connector->expects($this->exactly(2))->method('connect')->with('google.com:80')->willReturn($promise);
 
         $cm = new ConnectionManagerRepeat($connector, 2);
 
-        $promise = $cm->create('google.com', 80);
+        $promise = $cm->connect('google.com:80');
 
         $this->assertPromiseReject($promise);
     }
@@ -45,11 +45,11 @@ class ConnectionManagerRepeatTest extends TestCase
         $pending = new Promise\Promise(function () { }, $this->expectCallableOnce());
 
         $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $connector->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
+        $connector->expects($this->once())->method('connect')->with('google.com:80')->willReturn($pending);
 
         $cm = new ConnectionManagerRepeat($connector, 3);
 
-        $promise = $cm->create('google.com', 80);
+        $promise = $cm->connect('google.com:80');
         $promise->cancel();
     }
 
@@ -60,11 +60,11 @@ class ConnectionManagerRepeatTest extends TestCase
         });
 
         $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $connector->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
+        $connector->expects($this->once())->method('connect')->with('google.com:80')->willReturn($pending);
 
         $cm = new ConnectionManagerRepeat($connector, 3);
 
-        $promise = $cm->create('google.com', 80);
+        $promise = $cm->connect('google.com:80');
         $promise->cancel();
     }
 }

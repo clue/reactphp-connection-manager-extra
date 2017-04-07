@@ -18,11 +18,11 @@ class ConnectionManagerConcurrentTest extends TestCase
         $pending = new Promise\Promise(function() { });
 
         $only = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $only->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
+        $only->expects($this->once())->method('connect')->with('google.com:80')->willReturn($pending);
 
         $connector = new ConnectionManagerConcurrent(array($only));
 
-        $promise = $connector->create('google.com', 80);
+        $promise = $connector->connect('google.com:80');
 
         $promise->then($this->expectCallableNever(), $this->expectCallableNever());
     }
@@ -31,15 +31,15 @@ class ConnectionManagerConcurrentTest extends TestCase
     {
         $resolved = Promise\resolve($this->getMockBuilder('React\Stream\DuplexStreamInterface')->getMock());
         $first = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $first->expects($this->once())->method('create')->with('google.com', 80)->willReturn($resolved);
+        $first->expects($this->once())->method('connect')->with('google.com:80')->willReturn($resolved);
 
         $pending = new Promise\Promise(function() { }, $this->expectCallableOnce());
         $second = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $second->expects($this->once())->method('create')->with('google.com', 80)->willReturn($pending);
+        $second->expects($this->once())->method('connect')->with('google.com:80')->willReturn($pending);
 
         $connector = new ConnectionManagerConcurrent(array($first, $second));
 
-        $promise = $connector->create('google.com', 80);
+        $promise = $connector->connect('google.com:80');
 
         $this->assertPromiseResolve($promise);
     }
@@ -48,16 +48,16 @@ class ConnectionManagerConcurrentTest extends TestCase
     {
         $resolved = Promise\resolve($this->getMockBuilder('React\Stream\DuplexStreamInterface')->getMock());
         $first = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $first->expects($this->once())->method('create')->with('google.com', 80)->willReturn($resolved);
+        $first->expects($this->once())->method('connect')->with('google.com:80')->willReturn($resolved);
 
         $slower = $this->getMockBuilder('React\Stream\DuplexStreamInterface')->getMock();
         $slower->expects($this->once())->method('close');
         $second = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
-        $second->expects($this->once())->method('create')->with('google.com', 80)->willReturn(Promise\resolve($slower));
+        $second->expects($this->once())->method('connect')->with('google.com:80')->willReturn(Promise\resolve($slower));
 
         $connector = new ConnectionManagerConcurrent(array($first, $second));
 
-        $promise = $connector->create('google.com', 80);
+        $promise = $connector->connect('google.com:80');
 
         $this->assertPromiseResolve($promise);
     }
