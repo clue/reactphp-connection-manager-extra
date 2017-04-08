@@ -2,7 +2,7 @@
 
 namespace ConnectionManager\Extra;
 
-use React\SocketClient\ConnectorInterface;
+use React\Socket\ConnectorInterface;
 use InvalidArgumentException;
 use Exception;
 use React\Promise\Promise;

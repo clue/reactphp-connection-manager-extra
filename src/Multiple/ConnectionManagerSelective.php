@@ -2,7 +2,7 @@
 
 namespace ConnectionManager\Extra\Multiple;
 
-use React\SocketClient\ConnectorInterface;
+use React\Socket\ConnectorInterface;
 use React\Promise;
 use UnderflowException;
 use InvalidArgumentException;

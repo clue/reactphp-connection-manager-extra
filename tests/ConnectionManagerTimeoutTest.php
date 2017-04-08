@@ -68,7 +68,7 @@ class ConnectionManagerTimeoutTest extends TestCase
             });
         });
 
-        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
+        $connector = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('connect')->with('www.google.com:80')->willReturn($promise);
 
         $cm = new ConnectionManagerTimeout($connector, 0.001, $this->loop);
@@ -86,7 +86,7 @@ class ConnectionManagerTimeoutTest extends TestCase
             throw new \RuntimeException();
         });
 
-        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
+        $connector = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('connect')->with('www.google.com:80')->willReturn($promise);
 
         $cm = new ConnectionManagerTimeout($connector, 5.0, $this->loop);

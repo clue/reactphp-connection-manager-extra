@@ -31,7 +31,7 @@ class ConnectionManagerConsecutiveTest extends TestCase
     {
         $rejected = Promise\reject(new \RuntimeException('nope'));
 
-        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
+        $connector = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
         $connector->expects($this->exactly(2))->method('connect')->with('google.com:80')->willReturn($rejected);
 
         $cm = new ConnectionManagerConsecutive(array($connector, $connector));
@@ -45,7 +45,7 @@ class ConnectionManagerConsecutiveTest extends TestCase
     {
         $pending = new Promise\Promise(function () { }, $this->expectCallableOnce());
 
-        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
+        $connector = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('connect')->with('google.com:80')->willReturn($pending);
 
         $cm = new ConnectionManagerConsecutive(array($connector, $connector));

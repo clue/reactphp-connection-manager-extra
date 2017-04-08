@@ -69,7 +69,7 @@ class ConnectionManagerSelectiveTest extends TestCase
      */
     public function testInvalidMatcherThrowsException($matcher)
     {
-        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
+        $connector = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
 
         new ConnectionManagerSelective(array(
             $matcher => $connector
@@ -80,7 +80,7 @@ class ConnectionManagerSelectiveTest extends TestCase
     {
         $promise = $this->getMockBuilder('React\Promise\PromiseInterface')->getMock();
 
-        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
+        $connector = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('connect')->with('example.com:80')->willReturn($promise);
 
         $cm = new ConnectionManagerSelective(array(
@@ -96,7 +96,7 @@ class ConnectionManagerSelectiveTest extends TestCase
     {
         $promise = $this->getMockBuilder('React\Promise\PromiseInterface')->getMock();
 
-        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
+        $connector = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('connect')->with('[::1]:80')->willReturn($promise);
 
         $cm = new ConnectionManagerSelective(array(
@@ -112,7 +112,7 @@ class ConnectionManagerSelectiveTest extends TestCase
     {
         $promise = $this->getMockBuilder('React\Promise\PromiseInterface')->getMock();
 
-        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
+        $connector = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
         $connector->expects($this->once())->method('connect')->with('[::1]:80')->willReturn($promise);
 
         $cm = new ConnectionManagerSelective(array(
@@ -126,7 +126,7 @@ class ConnectionManagerSelectiveTest extends TestCase
 
     public function testNotMatchingDomainWillReject()
     {
-        $connector = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
+        $connector = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
         $connector->expects($this->never())->method('connect');
 
         $cm = new ConnectionManagerSelective(array(

@@ -26,7 +26,7 @@ class ConnectionManagerDelayTest extends TestCase
 
     public function testCancellationOfPromiseBeforeDelayDoesNotStartConnection()
     {
-        $unused = $this->getMockBuilder('React\SocketClient\ConnectorInterface')->getMock();
+        $unused = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
         $unused->expects($this->never())->method('connect');
 
         $cm = new ConnectionManagerDelay($unused, 1.0, $this->loop);
