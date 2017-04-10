@@ -1,6 +1,15 @@
 # Changelog
 
-## 0.6.0 (2016-04-07)
+## 0.7.0 (2017-04-10)
+
+* Feature / BC break: Replace deprecated SocketClient with new Socket component
+  (#17 by @clue)
+
+  This implies that all connectors from this package now implement the
+  `React\Socket\ConnectorInterface` instead of the legacy
+  `React\SocketClient\ConnectorInterface`.
+
+## 0.6.0 (2017-04-07)
 
 * Feature / BC break: Update SocketClient to v0.7 or v0.6
   (#16 by @clue)
