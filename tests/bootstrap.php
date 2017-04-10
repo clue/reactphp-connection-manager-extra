@@ -58,7 +58,7 @@ class TestCase extends PHPUnit_Framework_TestCase
 
     protected function createConnectionManagerMock($ret)
     {
-        $mock = $this->getMockBuilder('React\SocketClient\ConnectorInterface')
+        $mock = $this->getMockBuilder('React\Socket\ConnectorInterface')
             ->getMock();
 
         $deferred = new Deferred();

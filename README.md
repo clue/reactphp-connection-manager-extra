@@ -1,7 +1,7 @@
 # clue/connection-manager-extra [![Build Status](https://travis-ci.org/clue/php-connection-manager-extra.svg?branch=master)](https://travis-ci.org/clue/php-connection-manager-extra)
 
 This project provides _extra_ (in terms of "additional", "extraordinary", "special" and "unusual") decorators,
-built on top of [ReactPHP's SocketClient](https://github.com/reactphp/socket-client).
+built on top of [ReactPHP's Socket](https://github.com/reactphp/socket).
 
 **Table of Contents**
 
@@ -22,12 +22,12 @@ built on top of [ReactPHP's SocketClient](https://github.com/reactphp/socket-cli
 
 ## Introduction
 
-If you're not already familar with [react/socket-client](https://github.com/reactphp/socket-client),
+If you're not already familar with [react/socket](https://github.com/reactphp/socket),
 think of it as an async (non-blocking) version of [`fsockopen()`](http://php.net/manual/en/function.fsockopen.php)
 or [`stream_socket_client()`](http://php.net/manual/en/function.stream-socket-client.php).
 I.e. before you can send and receive data to/from a remote server, you first have to establish a connection - which
 takes its time because it involves several steps.
-In order to be able to establish several connections at the same time, [react/socket-client](https://github.com/reactphp/socket-client) provides a simple
+In order to be able to establish several connections at the same time, [react/socket](https://github.com/reactphp/socket) provides a simple
 API to establish simple connections in an async (non-blocking) way.
 
 This project includes several classes that extend this base functionality by implementing the same simple `ConnectorInterface`.
@@ -55,7 +55,7 @@ any combination thereof.
 
 This section lists all this libraries' features along with some examples.
 The examples assume you've [installed](#install) this library and
-already [set up a `SocketClient/Connector` instance `$connector`](https://github.com/reactphp/socket-client#async-tcpip-connections).
+already [set up a `Socket/Connector` instance `$connector`](https://github.com/reactphp/socket#connector).
 
 All classes are located in the `ConnectionManager\Extra` namespace.
 

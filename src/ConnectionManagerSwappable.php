@@ -2,7 +2,7 @@
 
 namespace ConnectionManager\Extra;
 
-use React\SocketClient\ConnectorInterface;
+use React\Socket\ConnectorInterface;
 
 // connection manager decorator which simplifies exchanging the actual connection manager during runtime
 class ConnectionManagerSwappable implements ConnectorInterface
