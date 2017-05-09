@@ -1,7 +1,5 @@
 <?php
 
-use React\Stream\Stream;
-
 use ConnectionManager\Extra\Multiple\ConnectionManagerSelective;
 use ConnectionManager\Extra\ConnectionManagerReject;
 
@@ -140,7 +138,7 @@ class ConnectionManagerSelectiveTest extends TestCase
 
     public function testReject()
     {
-        $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r+'), $this->createLoopMock()));
+        $will = $this->createConnectionManagerMock(true);
 
         $cm = new ConnectionManagerSelective(array(
             'www.google.com:443' => $will,
@@ -157,7 +155,7 @@ class ConnectionManagerSelectiveTest extends TestCase
     public function testFirstEntryWinsIfMultipleMatch()
     {
         $wont = new ConnectionManagerReject();
-        $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r+'), $this->createLoopMock()));
+        $will = $this->createConnectionManagerMock(true);
 
         $cm = new ConnectionManagerSelective(array(
             'www.google.com:443' => $will,
@@ -170,7 +168,7 @@ class ConnectionManagerSelectiveTest extends TestCase
 
     public function testWildcardsMatch()
     {
-        $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r+'), $this->createLoopMock()));
+        $will = $this->createConnectionManagerMock(true);
 
         $cm = new ConnectionManagerSelective(array(
             '*.com' => $will,
