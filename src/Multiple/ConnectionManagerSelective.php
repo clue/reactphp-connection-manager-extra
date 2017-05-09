@@ -65,19 +65,20 @@ class ConnectionManagerSelective implements ConnectorInterface
 
     public function connect($uri)
     {
-        try {
-            $parts = parse_url('tcp://' . $uri);
-            if (!isset($parts) || !isset($parts['scheme'], $parts['host'], $parts['port'])) {
-                throw new InvalidArgumentException('Invalid URI');
-            }
-
-            $connector = $this->getConnectorForTarget(
-                trim($parts['host'], '[]'),
-                $parts['port']
-            );
-        } catch (UnderflowException $e) {
-            return Promise\reject($e);
+        $parts = parse_url('tcp://' . $uri);
+        if (!isset($parts) || !isset($parts['scheme'], $parts['host'], $parts['port'])) {
+            return Promise\reject(new InvalidArgumentException('Invalid URI'));
         }
+
+        $connector = $this->getConnectorForTarget(
+            trim($parts['host'], '[]'),
+            $parts['port']
+        );
+
+        if ($connector === null) {
+            return Promise\reject(new UnderflowException('No connector for given target found'));
+        }
+
         return $connector->connect($uri);
     }
 
@@ -105,6 +106,6 @@ class ConnectionManagerSelective implements ConnectorInterface
             }
         }
 
-        throw new UnderflowException('No connector for given target found');
+        return null;
     }
 }
