@@ -203,7 +203,7 @@ The recommended way to install this library is [through Composer](http://getcomp
 This will install the latest supported version:
 
 ```bash
-$ composer require clue/connection-manager-extra:^0.7.1
+$ composer require clue/connection-manager-extra:^1.0
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for more details about version upgrades.

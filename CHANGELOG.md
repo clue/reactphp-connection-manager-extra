@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0 (2017-05-09)
+
+* First stable release, now following SemVer
+
+  > Contains no other changes, so it's actually fully compatible with the v0.7 releases.
+
 ## 0.7.1 (2017-05-09)
 
 * Fix: Reject promise for invalid URI passed to ConnectionManagerSelective
