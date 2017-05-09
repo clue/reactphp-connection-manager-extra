@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.1 (2017-05-09)
+
+* Fix: Reject promise for invalid URI passed to ConnectionManagerSelective
+  (#19 by @clue)
+
+* Feature: Forward compatibility with upcoming Socket v1.0 and v0.8 and
+  upcoming EventLoop v1.0 and v0.5
+  (#18 and #20 by @clue)
+
 ## 0.7.0 (2017-04-10)
 
 * Feature / BC break: Replace deprecated SocketClient with new Socket component
