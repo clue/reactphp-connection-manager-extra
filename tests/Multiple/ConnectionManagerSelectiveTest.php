@@ -13,6 +13,14 @@ class ConnectionManagerSelectiveTest extends TestCase
         $this->assertPromiseReject($promise);
     }
 
+    public function testInvalidUriWillAlwaysReject()
+    {
+        $cm = new ConnectionManagerSelective(array());
+
+        $promise = $cm->connect('////');
+        $this->assertPromiseReject($promise);
+    }
+
     /**
      * @expectedException InvalidArgumentException
      */
