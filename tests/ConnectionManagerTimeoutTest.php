@@ -2,11 +2,9 @@
 
 use ConnectionManager\Extra\ConnectionManagerReject;
 
-use React\Stream\Stream;
 use ConnectionManager\Extra\ConnectionManagerDelay;
 use ConnectionManager\Extra\ConnectionManagerTimeout;
 use React\Promise\Promise;
-use React\Promise\Timer;
 
 class ConnectionManagerTimeoutTest extends TestCase
 {
@@ -31,7 +29,7 @@ class ConnectionManagerTimeoutTest extends TestCase
 
     public function testTimeoutExpire()
     {
-        $will = $this->createConnectionManagerMock(new Stream(fopen('php://temp', 'r+'), $this->loop));
+        $will = $this->createConnectionManagerMock(true);
         $wont = new ConnectionManagerDelay($will, 0.2, $this->loop);
 
         $cm = new ConnectionManagerTimeout($wont, 0.1, $this->loop);
@@ -58,12 +56,12 @@ class ConnectionManagerTimeoutTest extends TestCase
 
     public function testWillEndConnectionIfConnectionResolvesDespiteTimeout()
     {
-        $stream = $this->getMockBuilder('React\Stream\DuplexStreamInterface')->disableOriginalConstructor()->getMock();
+        $stream = $this->getMockBuilder('React\Socket\ConnectionInterface')->getMock();
         $stream->expects($this->once())->method('end');
 
         $loop = $this->loop;
         $promise = new Promise(function ($resolve) use ($loop, $stream) {
-            $loop->addTimer(0.002, function () use ($resolve, $stream) {
+            $loop->addTimer(0.01, function () use ($resolve, $stream) {
                 $resolve($stream);
             });
         });

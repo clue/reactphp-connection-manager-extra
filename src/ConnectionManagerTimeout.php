@@ -5,7 +5,6 @@ namespace ConnectionManager\Extra;
 use React\Socket\ConnectorInterface;
 use React\EventLoop\LoopInterface;
 use React\Promise\Timer;
-use Exception;
 
 class ConnectionManagerTimeout implements ConnectorInterface
 {
