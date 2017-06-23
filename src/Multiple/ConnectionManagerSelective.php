@@ -65,7 +65,7 @@ class ConnectionManagerSelective implements ConnectorInterface
 
     public function connect($uri)
     {
-        $parts = parse_url('tcp://' . $uri);
+        $parts = parse_url((strpos($uri, '://') === false ? 'tcp://' : '') . $uri);
         if (!isset($parts) || !isset($parts['scheme'], $parts['host'], $parts['port'])) {
             return Promise\reject(new InvalidArgumentException('Invalid URI'));
         }
