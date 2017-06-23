@@ -195,6 +195,15 @@ $selective = new ConnectionManagerSelective(array(
 ));
 ```
 
+Each entry in the list MUST be in the form `host` or `host:port`, where
+`host` may contain the `*` wildcard character and `port` may be given as
+either an exact port number or as a range in the form of `min-max`.
+Passing anything else will result in an `InvalidArgumentException`.
+
+> Note that the host will be matched exactly as-is otherwise. This means that
+  if you only block `youtube.com`, this has no effect on `www.youtube.com`.
+  You may want to add a second rule for `*.youtube.com` in this case.
+
 ## Install
 
 The recommended way to install this library is [through Composer](http://getcomposer.org).

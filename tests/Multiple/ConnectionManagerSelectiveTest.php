@@ -144,7 +144,7 @@ class ConnectionManagerSelectiveTest extends TestCase
         $this->assertPromiseReject($promise);
     }
 
-    public function testReject()
+    public function testRejectIfNotMatching()
     {
         $will = $this->createConnectionManagerMock(true);
 
@@ -154,10 +154,13 @@ class ConnectionManagerSelectiveTest extends TestCase
         ));
 
         $this->assertPromiseResolve($cm->connect('www.google.com:443'));
+        $this->assertPromiseResolve($cm->connect('tls://www.google.com:443'));
 
         $this->assertPromiseReject($cm->connect('www.google.com:80'));
+        $this->assertPromiseReject($cm->connect('tcp://www.google.com:80'));
 
         $this->assertPromiseResolve($cm->connect('www.youtube.com:80'));
+        $this->assertPromiseResolve($cm->connect('tcp://www.youtube.com:80'));
     }
 
     public function testFirstEntryWinsIfMultipleMatch()
