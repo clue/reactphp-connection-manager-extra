@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 (2017-06-23)
+
+* Fix: Ignore URI scheme when matching selective connectors
+  (#21 by @clue)
+
+* Fix HHVM build for now again and ignore future HHVM build errors
+  (#22 by @clue)
+
 ## 1.0.0 (2017-05-09)
 
 * First stable release, now following SemVer
