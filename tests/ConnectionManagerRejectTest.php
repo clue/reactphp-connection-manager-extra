@@ -13,4 +13,17 @@ class ConnectionManagerRejectTest extends TestCase
 
         $promise->then($this->expectCallableNever(), $this->expectCallableOnce());
     }
+
+    public function testRejectWithCustomMessage()
+    {
+        $cm = new ConnectionManagerReject('Blocked');
+        $promise = $cm->connect('www.google.com:80');
+
+        $text = null;
+        $promise->then($this->expectCallableNever(), function (Exception $e) use (&$text) {
+            $text = $e->getMessage();
+        });
+
+        $this->assertEquals('Blocked', $text);
+    }
 }

@@ -96,9 +96,20 @@ $delayed = new ConnectionManagerDelayed($connector, 0.5, $loop);
 
 ### Reject
 
-The `ConnectionManagerReject()` simply rejects every single connection attempt.
+The `ConnectionManagerReject(?string $reason)` simply rejects every single connection attempt.
 This is particularly useful for the below [`ConnectionManagerSelective`](#selective) to reject connection attempts
 to only certain destinations (for example blocking advertisements or harmful sites).
+
+The constructor accepts an optional rejection reason which will be used for the
+`Exception` instance that is used to reject the resulting promise.
+
+```php
+$connector = new ConnectionManagerReject('Blocked');
+$connector->connect('www.google.com:80')->then(null, function ($e) {
+    assert($e instanceof \Exception);
+    assert($e->getMessage() === 'Blocked');
+});
+```
 
 ### Swappable
 
