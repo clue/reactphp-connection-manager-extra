@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.0 (2017-08-03)
+
+* Feature: Support custom rejection reason for ConnectionManagerReject
+  (#23 by @clue)
+
+  ```php
+  $connector = new ConnectionManagerReject(function ($uri) {
+      throw new RuntimeException($uri . ' blocked');
+  });
+  ```
+
 ## 1.0.1 (2017-06-23)
 
 * Fix: Ignore URI scheme when matching selective connectors
