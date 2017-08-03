@@ -26,4 +26,38 @@ class ConnectionManagerRejectTest extends TestCase
 
         $this->assertEquals('Blocked', $text);
     }
+
+    public function testRejectThrowsCustomException()
+    {
+        $cm = new ConnectionManagerReject(function ($uri) {
+            throw new RuntimeException('Blocked ' . $uri);
+        });
+
+        $promise = $cm->connect('www.google.com:80');
+
+        $exception = null;
+        $promise->then($this->expectCallableNever(), function ($e) use (&$exception) {
+            $exception = $e;
+        });
+
+        $this->assertInstanceOf('RuntimeException', $exception);
+        $this->assertEquals('Blocked www.google.com:80', $exception->getMessage());
+    }
+
+    public function testRejectReturnsCustomException()
+    {
+        $cm = new ConnectionManagerReject(function ($uri) {
+            return new RuntimeException('Blocked ' . $uri);
+        });
+
+        $promise = $cm->connect('www.google.com:80');
+
+        $exception = null;
+        $promise->then($this->expectCallableNever(), function ($e) use (&$exception) {
+            $exception = $e;
+        });
+
+        $this->assertInstanceOf('RuntimeException', $exception);
+        $this->assertEquals('Blocked www.google.com:80', $exception->getMessage());
+    }
 }

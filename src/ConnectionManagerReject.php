@@ -12,8 +12,7 @@ class ConnectionManagerReject implements ConnectorInterface
     private $reason = 'Connection rejected';
 
     /**
-     *
-     * @param ?string $reason
+     * @param null|string|callable $reason
      */
     public function __construct($reason = null)
     {
@@ -22,8 +21,21 @@ class ConnectionManagerReject implements ConnectorInterface
         }
     }
 
-    public function connect($_)
+    public function connect($uri)
     {
-        return Promise\reject(new Exception($this->reason));
+        $reason = $this->reason;
+        if (!is_string($reason)) {
+            try {
+                $reason = $reason($uri);
+            } catch (\Exception $e) {
+                $reason = $e;
+            }
+        }
+
+        if (!$reason instanceof \Exception) {
+            $reason = new Exception($reason);
+        }
+
+        return Promise\reject($reason);
     }
 }
