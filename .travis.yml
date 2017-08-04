@@ -9,7 +9,7 @@ php:
   - hhvm # ignore errors, see below
 
 # lock distro so new future defaults will not break the build
-distro: trusty
+dist: trusty
 
 matrix:
   include:
