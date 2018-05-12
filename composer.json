@@ -2,7 +2,7 @@
     "name": "clue/connection-manager-extra",
     "description": "Extra decorators for creating async TCP/IP connections, built on top of ReactPHP's Socket component",
     "keywords": ["Socket", "network", "connection", "timeout", "delay", "reject", "repeat", "retry", "random", "acl", "firewall", "ReactPHP"],
-    "homepage": "https://github.com/clue/php-connection-manager-extra",
+    "homepage": "https://github.com/clue/reactphp-connection-manager-extra",
     "license": "MIT",
     "authors": [
         {
