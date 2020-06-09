@@ -1,5 +1,7 @@
 <?php
 
+namespace ConnectionManager\Tests\Extra;
+
 use ConnectionManager\Extra\ConnectionManagerSwappable;
 use ConnectionManager\Extra\ConnectionManagerReject;
 

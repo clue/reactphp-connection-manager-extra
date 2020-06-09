@@ -1,8 +1,11 @@
 <?php
 
+namespace ConnectionManager\Tests\Extra\Multiple;
+
 use ConnectionManager\Extra\Multiple\ConnectionManagerRandom;
 use ConnectionManager\Extra\ConnectionManagerReject;
 use React\Promise;
+use ConnectionManager\Tests\Extra\TestCase;
 
 class ConnectionManagerRandomTest extends TestCase
 {

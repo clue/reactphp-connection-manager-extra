@@ -1,5 +1,7 @@
 <?php
 
+namespace ConnectionManager\Tests\Extra;
+
 use ConnectionManager\Extra\ConnectionManagerRepeat;
 use ConnectionManager\Extra\ConnectionManagerReject;
 use React\Promise;

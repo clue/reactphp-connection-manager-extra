@@ -1,5 +1,7 @@
 <?php
 
+namespace ConnectionManager\Tests\Extra;
+
 use ConnectionManager\Extra\ConnectionManagerReject;
 use ConnectionManager\Extra\ConnectionManagerTimeout;
 use React\Promise\Deferred;
@@ -14,7 +16,7 @@ class ConnectionManagerTimeoutTest extends TestCase
      */
     public function setUpLoop()
     {
-        $this->loop = React\EventLoop\Factory::create();
+        $this->loop = \React\EventLoop\Factory::create();
     }
 
     public function testTimeoutOkay()

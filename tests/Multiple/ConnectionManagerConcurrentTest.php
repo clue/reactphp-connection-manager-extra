@@ -1,7 +1,10 @@
 <?php
 
+namespace ConnectionManager\Tests\Extra\Multiple;
+
 use ConnectionManager\Extra\Multiple\ConnectionManagerConcurrent;
 use React\Promise;
+use ConnectionManager\Tests\Extra\TestCase;
 
 class ConnectionManagerConcurrentTest extends TestCase
 {

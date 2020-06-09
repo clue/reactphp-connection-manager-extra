@@ -98,5 +98,4 @@ class TestCase extends \PHPUnit\Framework\TestCase
             parent::setExpectedException($exception, $message, $code);
         }
     }
-
 }

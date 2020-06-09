@@ -1,7 +1,10 @@
 <?php
 
+namespace ConnectionManager\Tests\Extra\Multiple;
+
 use ConnectionManager\Extra\Multiple\ConnectionManagerSelective;
 use ConnectionManager\Extra\ConnectionManagerReject;
+use ConnectionManager\Tests\Extra\TestCase;
 
 class ConnectionManagerSelectiveTest extends TestCase
 {
