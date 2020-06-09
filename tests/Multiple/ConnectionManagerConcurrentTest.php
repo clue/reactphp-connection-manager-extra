@@ -5,11 +5,9 @@ use React\Promise;
 
 class ConnectionManagerConcurrentTest extends TestCase
 {
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testEmptyListsThrows()
     {
+        $this->setExpectedException("InvalidArgumentException");
         new ConnectionManagerConcurrent(array());
     }
 

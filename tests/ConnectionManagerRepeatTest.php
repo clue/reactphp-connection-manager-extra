@@ -31,11 +31,9 @@ class ConnectionManagerRepeatTest extends TestCase
         $this->assertPromiseReject($promise);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testInvalidRepetitions()
     {
+        $this->setExpectedException("InvalidArgumentException");
         $wont = new ConnectionManagerReject();
         $cm = new ConnectionManagerRepeat($wont, -3);
     }

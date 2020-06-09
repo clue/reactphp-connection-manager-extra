@@ -21,11 +21,10 @@ class ConnectionManagerSelectiveTest extends TestCase
         $this->assertPromiseReject($promise);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testInvalidConnectorThrowsException()
     {
+
+        $this->setExpectedException("InvalidArgumentException");
         new ConnectionManagerSelective(array(
             'example.com' => false
         ));
@@ -69,14 +68,13 @@ class ConnectionManagerSelectiveTest extends TestCase
 
     /**
      * @dataProvider provideInvalidMatcher
-     * @expectedException InvalidArgumentException
      *
      * @param string $matcher
      */
     public function testInvalidMatcherThrowsException($matcher)
     {
         $connector = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
-
+        $this->setExpectedException("InvalidArgumentException");
         new ConnectionManagerSelective(array(
             $matcher => $connector
         ));

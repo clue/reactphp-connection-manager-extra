@@ -7,7 +7,10 @@ class ConnectionManagerDelayTest extends TestCase
 {
     private $loop;
 
-    public function setUp()
+    /**
+     * @before
+     */
+    public function setUpLoop()
     {
         $this->loop = React\EventLoop\Factory::create();
     }

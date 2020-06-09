@@ -6,11 +6,9 @@ use React\Promise;
 
 class ConnectionManagerRandomTest extends TestCase
 {
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testEmptyListThrows()
     {
+        $this->setExpectedException("InvalidArgumentException");
         new ConnectionManagerRandom(array());
     }
 

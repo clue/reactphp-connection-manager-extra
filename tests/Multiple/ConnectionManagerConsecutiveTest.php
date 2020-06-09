@@ -6,11 +6,9 @@ use React\Promise;
 
 class ConnectionManagerConsecutiveTest extends TestCase
 {
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testEmptyListThrows()
     {
+        $this->setExpectedException("InvalidArgumentException");
         new ConnectionManagerConsecutive(array());
     }
 
