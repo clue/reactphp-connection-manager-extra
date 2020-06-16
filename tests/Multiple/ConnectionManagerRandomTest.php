@@ -1,16 +1,17 @@
 <?php
 
+namespace ConnectionManager\Tests\Extra\Multiple;
+
 use ConnectionManager\Extra\Multiple\ConnectionManagerRandom;
 use ConnectionManager\Extra\ConnectionManagerReject;
 use React\Promise;
+use ConnectionManager\Tests\Extra\TestCase;
 
 class ConnectionManagerRandomTest extends TestCase
 {
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testEmptyListThrows()
     {
+        $this->setExpectedException("InvalidArgumentException");
         new ConnectionManagerRandom(array());
     }
 

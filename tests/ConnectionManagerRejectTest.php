@@ -1,5 +1,7 @@
 <?php
 
+namespace ConnectionManager\Tests\Extra;
+
 use ConnectionManager\Extra\ConnectionManagerReject;
 
 class ConnectionManagerRejectTest extends TestCase
@@ -20,7 +22,7 @@ class ConnectionManagerRejectTest extends TestCase
         $promise = $cm->connect('www.google.com:80');
 
         $text = null;
-        $promise->then($this->expectCallableNever(), function (Exception $e) use (&$text) {
+        $promise->then($this->expectCallableNever(), function (\Exception $e) use (&$text) {
             $text = $e->getMessage();
         });
 
@@ -30,7 +32,7 @@ class ConnectionManagerRejectTest extends TestCase
     public function testRejectThrowsCustomException()
     {
         $cm = new ConnectionManagerReject(function ($uri) {
-            throw new RuntimeException('Blocked ' . $uri);
+            throw new \RuntimeException('Blocked ' . $uri);
         });
 
         $promise = $cm->connect('www.google.com:80');
@@ -47,7 +49,7 @@ class ConnectionManagerRejectTest extends TestCase
     public function testRejectReturnsCustomException()
     {
         $cm = new ConnectionManagerReject(function ($uri) {
-            return new RuntimeException('Blocked ' . $uri);
+            return new \RuntimeException('Blocked ' . $uri);
         });
 
         $promise = $cm->connect('www.google.com:80');

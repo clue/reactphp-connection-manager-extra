@@ -1,5 +1,7 @@
 <?php
 
+namespace ConnectionManager\Tests\Extra;
+
 use ConnectionManager\Extra\ConnectionManagerRepeat;
 use ConnectionManager\Extra\ConnectionManagerReject;
 use React\Promise;
@@ -31,11 +33,9 @@ class ConnectionManagerRepeatTest extends TestCase
         $this->assertPromiseReject($promise);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testInvalidRepetitions()
     {
+        $this->setExpectedException("InvalidArgumentException");
         $wont = new ConnectionManagerReject();
         $cm = new ConnectionManagerRepeat($wont, -3);
     }

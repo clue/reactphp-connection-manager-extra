@@ -1,10 +1,10 @@
 <?php
 
+namespace ConnectionManager\Tests\Extra;
+
 use React\Promise\Deferred;
 
-require __DIR__ . '/../vendor/autoload.php';
-
-class TestCase extends PHPUnit_Framework_TestCase
+class TestCase extends \PHPUnit\Framework\TestCase
 {
     protected function expectCallableOnce()
     {
@@ -53,7 +53,7 @@ class TestCase extends PHPUnit_Framework_TestCase
      */
     protected function createCallableMock()
     {
-        return $this->getMockBuilder('CallableStub')->getMock();
+        return $this->getMockBuilder('stdClass')->setMethods(array('__invoke'))->getMock();
     }
 
     protected function createConnectionManagerMock($ret)
@@ -85,11 +85,17 @@ class TestCase extends PHPUnit_Framework_TestCase
 
         $promise->then($this->expectCallableNever(), $this->expectCallableOnce());
     }
-}
 
-class CallableStub
-{
-    public function __invoke()
+    public function setExpectedException($exception, $message = '', $code = 0)
     {
+        if (method_exists($this, 'expectException')) {
+            $this->expectException($exception);
+            if ($message !== '') {
+                $this->expectExceptionMessage($message);
+            }
+            $this->expectExceptionCode($code);
+        } else {
+            parent::setExpectedException($exception, $message, $code);
+        }
     }
 }
