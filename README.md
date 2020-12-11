@@ -246,6 +246,11 @@ $ composer require clue/connection-manager-extra:^1.1
 
 See also the [CHANGELOG](CHANGELOG.md) for more details about version upgrades.
 
+This project aims to run on any platform and thus does not require any PHP
+extensions and supports running on legacy PHP 5.3 through current PHP 8+ and
+HHVM.
+It's *highly recommended to use PHP 7+* for this project.
+
 ## Tests
 
 To run the test suite, you first need to clone this repo and then install all
