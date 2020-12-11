@@ -1,4 +1,6 @@
-# clue/reactphp-connection-manager-extra [![Build Status](https://travis-ci.org/clue/reactphp-connection-manager-extra.svg?branch=master)](https://travis-ci.org/clue/reactphp-connection-manager-extra)
+# clue/reactphp-connection-manager-extra
+
+[![CI status](https://github.com/clue/reactphp-connection-manager-extra/workflows/CI/badge.svg)](https://github.com/clue/reactphp-connection-manager-extra/actions)
 
 This project provides _extra_ (in terms of "additional", "extraordinary", "special" and "unusual") decorators,
 built on top of [ReactPHP's Socket](https://github.com/reactphp/socket).
