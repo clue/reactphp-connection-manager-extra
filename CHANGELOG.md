@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 (2020-12-12)
+
+*   Improve test suite and add `.gitattributes` to exclude dev files from exports.
+    Prepare PHP 8 support, update to PHPUnit 9 and simplify test matrix.
+    (#24, #25 and #26 by @clue and #27, #28, #29 and #30 by @SimonFrings)
+
 ## 1.1.0 (2017-08-03)
 
 * Feature: Support custom rejection reason for ConnectionManagerReject

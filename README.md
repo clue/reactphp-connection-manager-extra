@@ -7,26 +7,37 @@ built on top of [ReactPHP's Socket](https://github.com/reactphp/socket).
 
 **Table of Contents**
 
+* [Support us](#support-us)
 * [Introduction](#introduction)
 * [Usage](#usage)
-  * [Repeat](#repeat)
-  * [Timeout](#timeout)
-  * [Delay](#delay)
-  * [Reject](#reject)
-  * [Swappable](#swappable)
-  * [Consecutive](#consecutive)
-  * [Random](#random)
-  * [Concurrent](#concurrent)
-  * [Selective](#selective)
+    * [Repeat](#repeat)
+    * [Timeout](#timeout)
+    * [Delay](#delay)
+    * [Reject](#reject)
+    * [Swappable](#swappable)
+    * [Consecutive](#consecutive)
+    * [Random](#random)
+    * [Concurrent](#concurrent)
+    * [Selective](#selective)
 * [Install](#install)
 * [Tests](#tests)
 * [License](#license)
 
+## Support us
+
+We invest a lot of time developing, maintaining and updating our awesome
+open-source projects. You can help us sustain this high-quality of our work by
+[becoming a sponsor on GitHub](https://github.com/sponsors/clue). Sponsors get
+numerous benefits in return, see our [sponsoring page](https://github.com/sponsors/clue)
+for details.
+
+Let's take these projects to the next level together! 🚀
+
 ## Introduction
 
 If you're not already familar with [react/socket](https://github.com/reactphp/socket),
-think of it as an async (non-blocking) version of [`fsockopen()`](http://php.net/manual/en/function.fsockopen.php)
-or [`stream_socket_client()`](http://php.net/manual/en/function.stream-socket-client.php).
+think of it as an async (non-blocking) version of [`fsockopen()`](https://www.php.net/manual/en/function.fsockopen.php)
+or [`stream_socket_client()`](https://www.php.net/manual/en/function.stream-socket-client.php).
 I.e. before you can send and receive data to/from a remote server, you first have to establish a connection - which
 takes its time because it involves several steps.
 In order to be able to establish several connections at the same time, [react/socket](https://github.com/reactphp/socket) provides a simple
@@ -235,16 +246,17 @@ Passing anything else will result in an `InvalidArgumentException`.
 
 ## Install
 
-The recommended way to install this library is [through Composer](http://getcomposer.org).
-[New to Composer?](http://getcomposer.org/doc/00-intro.md)
+The recommended way to install this library is [through Composer](https://getcomposer.org).
+[New to Composer?](https://getcomposer.org/doc/00-intro.md)
 
+This project follows [SemVer](https://semver.org/).
 This will install the latest supported version:
 
 ```bash
-$ composer require clue/connection-manager-extra:^1.1
+$ composer require clue/connection-manager-extra:^1.2
 ```
 
-See also the [CHANGELOG](CHANGELOG.md) for more details about version upgrades.
+See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
 
 This project aims to run on any platform and thus does not require any PHP
 extensions and supports running on legacy PHP 5.3 through current PHP 8+ and
@@ -254,7 +266,7 @@ It's *highly recommended to use PHP 7+* for this project.
 ## Tests
 
 To run the test suite, you first need to clone this repo and then install all
-dependencies [through Composer](http://getcomposer.org):
+dependencies [through Composer](https://getcomposer.org):
 
 ```bash
 $ composer install
@@ -268,4 +280,7 @@ $ php vendor/bin/phpunit
 
 ## License
 
-MIT
+This project is released under the permissive [MIT license](LICENSE).
+
+> Did you know that I offer custom development services and issuing invoices for
+  sponsorships of releases and for contributions? Contact me (@clue) for details.
