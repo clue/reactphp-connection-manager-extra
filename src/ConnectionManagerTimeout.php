@@ -2,21 +2,32 @@
 
 namespace ConnectionManager\Extra;
 
-use React\Socket\ConnectorInterface;
+use React\EventLoop\Loop;
 use React\EventLoop\LoopInterface;
 use React\Promise\Timer;
+use React\Socket\ConnectorInterface;
 
 class ConnectionManagerTimeout implements ConnectorInterface
 {
+    /** @var ConnectorInterface */
     private $connectionManager;
+
+    /** @var float */
     private $timeout;
+
+    /** @var LoopInterface */
     private $loop;
 
-    public function __construct(ConnectorInterface $connectionManager, $timeout, LoopInterface $loop)
+    /**
+     * @param ConnectorInterface $connectionManager
+     * @param float $timeout
+     * @param ?LoopInterface $loop
+     */
+    public function __construct(ConnectorInterface $connectionManager, $timeout, LoopInterface $loop = null)
     {
         $this->connectionManager = $connectionManager;
         $this->timeout = $timeout;
-        $this->loop = $loop;
+        $this->loop = $loop ?: Loop::get();
     }
 
     public function connect($uri)

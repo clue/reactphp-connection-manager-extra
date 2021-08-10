@@ -2,21 +2,32 @@
 
 namespace ConnectionManager\Extra;
 
-use React\Socket\ConnectorInterface;
+use React\EventLoop\Loop;
 use React\EventLoop\LoopInterface;
 use React\Promise\Timer;
+use React\Socket\ConnectorInterface;
 
 class ConnectionManagerDelay implements ConnectorInterface
 {
+    /** @var ConnectorInterface */
     private $connectionManager;
+
+    /** @var float */
     private $delay;
+
+    /** @var LoopInterface */
     private $loop;
 
-    public function __construct(ConnectorInterface $connectionManager, $delay, LoopInterface $loop)
+    /**
+     * @param ConnectorInterface $connectionManager
+     * @param float $delay
+     * @param ?LoopInterface $loop
+     */
+    public function __construct(ConnectorInterface $connectionManager, $delay, LoopInterface $loop = null)
     {
         $this->connectionManager = $connectionManager;
         $this->delay = $delay;
-        $this->loop = $loop;
+        $this->loop = $loop ?: Loop::get();
     }
 
     public function connect($uri)
