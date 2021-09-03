@@ -3,6 +3,7 @@
 namespace ConnectionManager\Tests\Extra;
 
 use ConnectionManager\Extra\ConnectionManagerDelay;
+use React\EventLoop\Loop;
 
 class ConnectionManagerDelayTest extends TestCase
 {
@@ -13,7 +14,19 @@ class ConnectionManagerDelayTest extends TestCase
      */
     public function setUpLoop()
     {
-        $this->loop = \React\EventLoop\Factory::create();
+        $this->loop = Loop::get();
+    }
+
+    public function testConstructWithoutLoopAssignsLoopAutomatically()
+    {
+        $unused = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
+        $cm = new ConnectionManagerDelay($unused, 0);
+        
+        $ref = new \ReflectionProperty($cm, 'loop');
+        $ref->setAccessible(true);
+        $loop = $ref->getValue($cm);
+        
+        $this->assertInstanceOf('React\EventLoop\LoopInterface', $loop);
     }
 
     public function testDelayTenth()
@@ -24,7 +37,7 @@ class ConnectionManagerDelayTest extends TestCase
         $promise = $cm->connect('www.google.com:80');
         $this->assertInstanceOf('React\Promise\PromiseInterface', $promise);
 
-        $this->loop->run();
+        Loop::run();
         $promise->then($this->expectCallableOnce(), $this->expectCallableNever());
     }
 
@@ -38,6 +51,6 @@ class ConnectionManagerDelayTest extends TestCase
         $promise = $cm->connect('www.google.com:80');
         $promise->cancel();
 
-        $this->loop->run();
+        Loop::run();
     }
 }

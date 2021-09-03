@@ -18,8 +18,8 @@
     },
     "require": {
         "php": ">=5.3",
-        "react/socket": "^1.0 || ^0.8 || ^0.7",
-        "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3.5",
+        "react/socket": "^1.9",
+        "react/event-loop": "^1.2",
         "react/promise": "^2.1 || ^1.2.1",
         "react/promise-timer": "^1.1"
     },

@@ -16,7 +16,19 @@ class ConnectionManagerTimeoutTest extends TestCase
      */
     public function setUpLoop()
     {
-        $this->loop = \React\EventLoop\Factory::create();
+        $this->loop = \React\EventLoop\Loop::get();
+    }
+
+    public function testConstructWithoutLoopAssignsLoopAutomatically()
+    {
+        $unused = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
+        $cm = new ConnectionManagerTimeout($unused, 0);
+
+        $ref = new \ReflectionProperty($cm, 'loop');
+        $ref->setAccessible(true);
+        $loop = $ref->getValue($cm);
+
+        $this->assertInstanceOf('React\EventLoop\LoopInterface', $loop);
     }
 
     public function testTimeoutOkay()
