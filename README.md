@@ -1,6 +1,6 @@
 # clue/reactphp-connection-manager-extra
 
-[![CI status](https://github.com/clue/reactphp-connection-manager-extra/workflows/CI/badge.svg)](https://github.com/clue/reactphp-connection-manager-extra/actions)
+[![CI status](https://github.com/clue/reactphp-connection-manager-extra/actions/workflows/ci.yml/badge.svg)](https://github.com/clue/reactphp-connection-manager-extra/actions)
 [![installs on Packagist](https://img.shields.io/packagist/dt/clue/connection-manager-extra?color=blue&label=installs%20on%20Packagist)](https://packagist.org/packages/clue/connection-manager-extra)
 
 This project provides _extra_ (in terms of "additional", "extraordinary", "special" and "unusual") decorators,
