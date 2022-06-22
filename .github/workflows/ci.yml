@@ -26,8 +26,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: composer install
       - run: vendor/bin/phpunit --coverage-text
         if: ${{ matrix.php >= 7.3 }}
@@ -37,7 +35,6 @@ jobs:
   PHPUnit-hhvm:
     name: PHPUnit (HHVM)
     runs-on: ubuntu-18.04
-    if: false # temporarily skipped until https://github.com/azjezz/setup-hhvm/issues/3 is addressed
     steps:
       - uses: actions/checkout@v2
       - uses: azjezz/setup-hhvm@v1
