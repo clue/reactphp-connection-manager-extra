@@ -2,9 +2,8 @@
 
 namespace ConnectionManager\Extra\Multiple;
 
-use ConnectionManager\Extra\Multiple\ConnectionManagerConsecutive;
 use React\Promise;
-use React\Promise\CancellablePromiseInterface;
+use React\Promise\PromiseInterface;
 
 class ConnectionManagerConcurrent extends ConnectionManagerConsecutive
 {
@@ -12,14 +11,13 @@ class ConnectionManagerConcurrent extends ConnectionManagerConsecutive
     {
         $all = array();
         foreach ($this->managers as $connector) {
-            /* @var $connection Connector */
             $all []= $connector->connect($uri);
         }
         return Promise\any($all)->then(function ($conn) use ($all) {
             // a connection attempt succeeded
             // => cancel all pending connection attempts
             foreach ($all as $promise) {
-                if ($promise instanceof CancellablePromiseInterface) {
+                if ($promise instanceof PromiseInterface && \method_exists($promise, 'cancel')) {
                     $promise->cancel();
                 }
 
