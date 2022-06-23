@@ -62,12 +62,12 @@ $connector->connect('www.google.com:80')->then(function ($stream) {
 Because everything uses the same simple API, the resulting `Connector` classes can be easily interchanged
 and be used in places that expect the normal `ConnectorInterface`. This can be used to stack them into each other,
 like using [timeouts](#timeout) for TCP connections, [delaying](#delay) SSL/TLS connections,
-[retrying](#repeat) failed connection attemps, [randomly](#random) picking a `Connector` or
+[retrying](#repeat) failed connection attempts, [randomly](#random) picking a `Connector` or
 any combination thereof.
 
 ## Usage
 
-This section lists all this libraries' features along with some examples.
+This section lists all features of this library along with some examples.
 The examples assume you've [installed](#install) this library and
 already [set up a `Socket/Connector` instance `$connector`](https://github.com/reactphp/socket#connector).
 
@@ -148,7 +148,7 @@ simplify exchanging the actual `ConnectionManager` during runtime (`->setConnect
 
 ### Consecutive
 
-The `ConnectionManagerConsecutive($connectors)` establishs connections by trying to connect through
+The `ConnectionManagerConsecutive($connectors)` establishes connections by trying to connect through
 any of the given `ConnectionManager`s in consecutive order until the first one succeeds.
 
 ```php
@@ -186,7 +186,7 @@ $concurrent = new ConnectionManagerConcurrent(array(
 
 The `ConnectionManagerSelective($connectors)` manages a list of `Connector`s and
 forwards each connection through the first matching one.
-This can be used to implement networking access control lists (ACLs) or firewill
+This can be used to implement networking access control lists (ACLs) or firewall
 rules like a blacklist or whitelist.
 
 This allows fine-grained control on how to handle outgoing connections, like
@@ -247,7 +247,7 @@ Passing anything else will result in an `InvalidArgumentException`.
 
 ## Install
 
-The recommended way to install this library is [through Composer](https://getcomposer.org).
+The recommended way to install this library is [through Composer](https://getcomposer.org/).
 [New to Composer?](https://getcomposer.org/doc/00-intro.md)
 
 This project follows [SemVer](https://semver.org/).
@@ -262,12 +262,12 @@ See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
 This project aims to run on any platform and thus does not require any PHP
 extensions and supports running on legacy PHP 5.3 through current PHP 8+ and
 HHVM.
-It's *highly recommended to use PHP 7+* for this project.
+It's *highly recommended to use the latest supported PHP version* for this project.
 
 ## Tests
 
 To run the test suite, you first need to clone this repo and then install all
-dependencies [through Composer](https://getcomposer.org):
+dependencies [through Composer](https://getcomposer.org/):
 
 ```bash
 $ composer install
@@ -276,7 +276,7 @@ $ composer install
 To run the test suite, go to the project root and run:
 
 ```bash
-$ php vendor/bin/phpunit
+$ vendor/bin/phpunit
 ```
 
 ## License
