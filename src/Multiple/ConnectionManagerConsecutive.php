@@ -2,10 +2,10 @@
 
 namespace ConnectionManager\Extra\Multiple;
 
-use React\Socket\ConnectorInterface;
 use React\Promise;
+use React\Promise\PromiseInterface;
+use React\Socket\ConnectorInterface;
 use UnderflowException;
-use React\Promise\CancellablePromiseInterface;
 
 class ConnectionManagerConsecutive implements ConnectorInterface
 {
@@ -54,7 +54,7 @@ class ConnectionManagerConsecutive implements ConnectorInterface
             $managers = array();
             $reject(new \RuntimeException('Cancelled'));
 
-            if ($pending instanceof CancellablePromiseInterface) {
+            if ($pending instanceof PromiseInterface && \method_exists($pending, 'cancel')) {
                 $pending->cancel();
             }
         });

@@ -6,7 +6,7 @@ use React\Socket\ConnectorInterface;
 use InvalidArgumentException;
 use Exception;
 use React\Promise\Promise;
-use React\Promise\CancellablePromiseInterface;
+use React\Promise\PromiseInterface;
 
 class ConnectionManagerRepeat implements ConnectorInterface
 {
@@ -44,7 +44,7 @@ class ConnectionManagerRepeat implements ConnectorInterface
             $tries = 0;
             $reject(new \RuntimeException('Cancelled'));
 
-            if ($pending instanceof CancellablePromiseInterface) {
+            if ($pending instanceof PromiseInterface && \method_exists($pending, 'cancel')) {
                 $pending->cancel();
             }
         });
