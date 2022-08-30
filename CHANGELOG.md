@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.3.0 (2022-08-30)
+
+*   Feature: Simplify usage by supporting new default loop.
+    (#33 by @SimonFrings)
+
+    ```php
+    // old (still supported)
+    $connector = new ConnectionManagerTimeout($connector, 3.0, $loop);
+    $delayed = new ConnectionManagerDelayed($connector, 0.5, $loop);
+
+    // new (using default loop)
+    $connector = new ConnectionManagerTimeout($connector, 3.0);
+    $delayed = new ConnectionManagerDelayed($connector, 0.5);
+    ```
+
+*   Feature: Full support for PHP 8.1 and PHP 8.2.
+    (#36 and #37 by @SimonFrings)
+
+*   Feature: Forward compatibility with upcoming Promise v3.
+    (#34 by @clue)
+
+*   Improve test suite and add badge to show number of project installations.
+    (#35 by @SimonFrings and #31 by @PaulRotmann)
+
 ## 1.2.0 (2020-12-12)
 
 *   Improve test suite and add `.gitattributes` to exclude dev files from exports.
