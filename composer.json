@@ -10,12 +10,6 @@
             "email": "christian@clue.engineering"
         }
     ],
-    "autoload": {
-        "psr-4": { "ConnectionManager\\Extra\\": "src" }
-    },
-    "autoload-dev": {
-        "psr-4": { "ConnectionManager\\Tests\\Extra\\": "tests/" }
-    },
     "require": {
         "php": ">=5.3",
         "react/event-loop": "^1.2",
@@ -24,6 +18,16 @@
         "react/socket": "^1.12"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.3 || ^5.7 || ^4.8"
+        "phpunit/phpunit": "^9.6 || ^5.7 || ^4.8.36"
+    },
+    "autoload": {
+        "psr-4": {
+            "ConnectionManager\\Extra\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ConnectionManager\\Tests\\Extra\\": "tests/"
+        }
     }
 }
