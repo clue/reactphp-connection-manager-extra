@@ -21,12 +21,20 @@ class ConnectionManagerDelayTest extends TestCase
     {
         $unused = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
         $cm = new ConnectionManagerDelay($unused, 0);
-        
+
         $ref = new \ReflectionProperty($cm, 'loop');
         $ref->setAccessible(true);
         $loop = $ref->getValue($cm);
-        
+
         $this->assertInstanceOf('React\EventLoop\LoopInterface', $loop);
+    }
+
+    public function testContructorThrowsExceptionForInvalidLoop()
+    {
+        $unused = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
+
+        $this->setExpectedException('InvalidArgumentException', 'Argument #3 ($loop) expected null|React\EventLoop\LoopInterface');
+        new ConnectionManagerDelay($unused, 0, 'loop');
     }
 
     public function testDelayTenth()

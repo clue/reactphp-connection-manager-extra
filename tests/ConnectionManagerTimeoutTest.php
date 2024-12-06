@@ -31,6 +31,14 @@ class ConnectionManagerTimeoutTest extends TestCase
         $this->assertInstanceOf('React\EventLoop\LoopInterface', $loop);
     }
 
+    public function testContructorThrowsExceptionForInvalidLoop()
+    {
+        $unused = $this->getMockBuilder('React\Socket\ConnectorInterface')->getMock();
+
+        $this->setExpectedException('InvalidArgumentException', 'Argument #3 ($loop) expected null|React\EventLoop\LoopInterface');
+        new ConnectionManagerTimeout($unused, 0, 'loop');
+    }
+
     public function testTimeoutOkay()
     {
         $will = $this->createConnectionManagerMock(true);
