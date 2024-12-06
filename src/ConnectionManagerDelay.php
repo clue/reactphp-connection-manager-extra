@@ -23,8 +23,12 @@ class ConnectionManagerDelay implements ConnectorInterface
      * @param float $delay
      * @param ?LoopInterface $loop
      */
-    public function __construct(ConnectorInterface $connectionManager, $delay, LoopInterface $loop = null)
+    public function __construct(ConnectorInterface $connectionManager, $delay, $loop = null)
     {
+        if ($loop !== null && !$loop instanceof LoopInterface) { // manual type check to support legacy PHP < 7.1
+            throw new \InvalidArgumentException('Argument #3 ($loop) expected null|React\EventLoop\LoopInterface');
+        }
+
         $this->connectionManager = $connectionManager;
         $this->delay = $delay;
         $this->loop = $loop ?: Loop::get();
