@@ -25,7 +25,9 @@ class ConnectionManagerTimeoutTest extends TestCase
         $cm = new ConnectionManagerTimeout($unused, 0);
 
         $ref = new \ReflectionProperty($cm, 'loop');
-        $ref->setAccessible(true);
+        if (PHP_VERSION_ID < 80100) {
+            $ref->setAccessible(true);
+        }
         $loop = $ref->getValue($cm);
 
         $this->assertInstanceOf('React\EventLoop\LoopInterface', $loop);
