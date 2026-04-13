@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.4.0 (2026-04-13)
+
+*   Feature: Improve PHP 8.5+ and PHP 8.4+ support and update test environment.
+    (#40, #41 and #43 by @clue)
+
+*   Improve test suite to ensure 100% code coverage and support legacy PHP 7.2 with PHPUnit 8.5.
+    (#42 and #44 by @clue)
+
 ## 1.3.0 (2022-08-30)
 
 *   Feature: Simplify usage by supporting new default loop.
